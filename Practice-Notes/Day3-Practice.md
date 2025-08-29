@@ -37,30 +37,101 @@ class Solution {
 
 <br>
 
-##  27. 移除元素
-- 题目链接：[**LeetCode 27. Remove Element**](https://leetcode.com/problems/remove-element/)
-- 关键词：**Two Pointers**
+##  707.设计链表
+- 题目链接：[**LeetCode 707. Design Linked List**](https://leetcode.com/problems/design-linked-list/)
+- 关键词：**Linked List**
 
 <br>
 
 ## 💡 思路
-运用Two Pointers，一个指针记录当前的index，另一个指针记录不需要remove的数量，如果当前index不需要remove，就放在另一个指针的位置然后update  
+这是一道非常全面考察Linked List基本method的implementation
+
+**考虑将已经做好的method运用到其他的method里面去，减少代码量**
+
+- **Initialization**：
+    - 创建一个Node Class，里面包含Node的value和下一个Node，然后Initialize Node
+    - 创建Linked List，里面包含size，来统计一共有多少node，还有head node。**做题时尽量考虑dummy node为head node**，这样写method implementation更加方便。
+
+- **Get**：
+    - 考虑index是否valid，如果not valid就return -1
+    - 设定最开始node为curNode，iterate到指定的index然后return value
+
+- **AddAtHead**:
+    - 将dummy node的下一个node存储在temp里
+    - 把新的node加到dummy node之后
+    - 将temp node加到新的node后面
+    - Update Size
+
+- **AddAtTail**：
+    - 循环至最后一个node，将新的node加到最后一个node之后
+    - Update Size
 
 <br>
 
 ## 💻 代码实现
 ```java
-class Solution {
-    public int removeElement(int[] nums, int val) {
-        int count = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != val){
-                nums[count] = nums[i];
-                count++;
-            }
-        }
+class MyLinkedList {
+    class Node {
+        int val;
+        Node next;
+        Node(int val) { this.val = val; }
+    }
 
-        return count;
+    private int size;
+    private final Node head; // sentinel
+
+    public MyLinkedList() {
+        this.size = 0;
+        this.head = new Node(0);
+    }
+
+    public int get(int index) {
+        if (index < 0 || index >= size) return -1;
+        Node cur = head.next;          // first real node
+        for (int i = 0; i < index; i++) cur = cur.next;
+        return cur.val;
+    }
+
+    public void addAtHead(int val) {
+        Node node = new Node(val);
+        node.next = head.next;
+        head.next = node;
+        size++;
+    }
+
+    public void addAtTail(int val) {
+        Node cur = head;
+        while (cur.next != null) cur = cur.next;
+        cur.next = new Node(val);
+        size++;
+    }
+
+    public void addAtIndex(int index, int val) {
+        if (index <= 0) {              // treat negative as 0
+            addAtHead(val);
+            return;
+        }
+        if (index == size) {           // append
+            addAtTail(val);
+            return;
+        }
+        if (index > size) return;      // out of bounds
+
+        // insert before the current index-th node: find predecessor
+        Node pred = head;
+        for (int i = 0; i < index; i++) pred = pred.next;
+        Node node = new Node(val);
+        node.next = pred.next;
+        pred.next = node;
+        size++;
+    }
+
+    public void deleteAtIndex(int index) {
+        if (index < 0 || index >= size) return;
+        Node pred = head;
+        for (int i = 0; i < index; i++) pred = pred.next;
+        pred.next = pred.next.next;
+        size--;
     }
 }
 ```
