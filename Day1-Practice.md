@@ -6,13 +6,13 @@
 - 题目链接：[LeetCode 704. Binary Search](https://leetcode.com/problems/binary-search/)
 - 关键词：Binary Search  
 
----
+
 <div style="margin:50px 0;"></div>
 
 ## 💡 思路
 运用二分查找(Binary Search)，在 **左闭右闭区间** `[left, right]` 内查找 target：  
 
----
+
 <div style="margin:50px 0;"></div>
 
 ## 💻 代码实现
