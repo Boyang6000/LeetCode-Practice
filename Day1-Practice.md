@@ -65,3 +65,45 @@ class Solution {
 }
 ```
 
+<br>
+
+##  977. 有序数组的平方
+- 题目链接：[**LeetCode 977. Squares of a Sorted Array**](https://leetcode.com/problems/squares-of-a-sorted-array/)
+- 关键词：**Two Pointers**
+
+<br>
+
+## 💡 思路  
+先将所有的数字根据他们的绝对值大小进行排序，用两个指针分别指向left和right进行大小比较，将另一个指针放在新的Array的队尾，将大的数字放在另一个指针的位置，然后update所有指针的位置。当排序完成时，将每个数字平方即可
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public int[] sortedSquares(int[] nums) {
+        int index = nums.length - 1;
+        int left = 0;
+        int right = nums.length - 1;
+        int[] ans = new int[nums.length];
+
+        while(left <= right){
+            if(Math.abs(nums[left]) > Math.abs(nums[right])){
+                ans[index] = nums[left];
+                index--;
+                left++;
+            }
+            else{
+                ans[index] = nums[right];
+                index--;
+                right--;
+            }
+        }
+
+        for(int i = 0; i < ans.length; i++){
+            ans[i] = ans[i] * ans[i];
+        }
+
+        return ans;
+    }
+}
+```
