@@ -186,4 +186,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-作为Day 1的题目，这三道题目都是比较基础的，其中Binary Search和Two Pointers这两个思想都是运用比较广泛的，这几道题目也是自己练过很多遍的，基本不会出现问题。希望能将这两个思路继续运用到别的不同的题目上面去
+今天的题目都是关于Linked List，涉及到比较基础的一些method的implementation，在做关于linked list的题目时一定要注意while loop结束的点，以及你的curNode移动到了哪里。关于最基本的增加/删减/查询 node，一定要把edge case考虑全面。
