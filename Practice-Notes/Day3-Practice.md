@@ -66,6 +66,21 @@ class Solution {
     - 循环至最后一个node，将新的node加到最后一个node之后
     - Update Size
 
+- **AddAtIndex**：
+    - Index小于等于0时，将node加到head，**运用AddAtHead**
+    - Index等于size时，将node加到tail，**运用AddAtTail**
+    - Index is not valid，return void
+    - 找到加入index之前一位的node
+    - 将这个node.next加入到新的node之后
+    - 再将新的node加入到这个node后面
+    - Update Size
+
+- **DeleteAtIndex**：
+    - 如果index is not valid，return null
+    - 找到删除index之前一位的node
+    - 将这个node.next链接到node.next.next
+    - Update Size
+
 <br>
 
 ## 💻 代码实现
