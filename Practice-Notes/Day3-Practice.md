@@ -153,44 +153,32 @@ class MyLinkedList {
 
 <br>
 
-##  977. 有序数组的平方
-- 题目链接：[**LeetCode 977. Squares of a Sorted Array**](https://leetcode.com/problems/squares-of-a-sorted-array/)
-- 关键词：**Two Pointers**
+##  206. 反转链表
+- 题目链接：[**LeetCode 206. Reverse Linked List**](https://leetcode.com/problems/reverse-linked-list/)
+- 关键词：**Two Pointers, Linked List**
 
 <br>
 
 ## 💡 思路  
-先将所有的数字根据他们的绝对值大小进行排序，用两个指针分别指向left和right进行大小比较，将另一个指针放在新的Array的队尾，将大的数字放在另一个指针的位置，然后update所有指针的位置。当排序完成时，将每个数字平方即可
+这道题的思路非常巧妙，以1 -> 2 -> 3 -> 4 -> 5为例，在前面增加一个dummy node，变成 0 -> 1 -> 2 -> 3 -> 4 -> 5, 然后一个指针指向0，另一个指针指向1，进行翻转。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[] sortedSquares(int[] nums) {
-        int index = nums.length - 1;
-        int left = 0;
-        int right = nums.length - 1;
-        int[] ans = new int[nums.length];
-
-        while(left <= right){
-            if(Math.abs(nums[left]) > Math.abs(nums[right])){
-                ans[index] = nums[left];
-                index--;
-                left++;
-            }
-            else{
-                ans[index] = nums[right];
-                index--;
-                right--;
-            }
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode temp = null;
+        while(cur != null){
+            temp = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = temp;
         }
 
-        for(int i = 0; i < ans.length; i++){
-            ans[i] = ans[i] * ans[i];
-        }
-
-        return ans;
+        return prev;
     }
 }
 ```
