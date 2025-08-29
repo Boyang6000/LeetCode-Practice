@@ -4,7 +4,7 @@
 
 <br>
 
-## 📅 快速跳转：每日练习（Daily Index）
+## 📅 每日练习
 
 
 - 2025-08-28 · Day 1：日志 → [Day 1](./Day1-Practice.md)
@@ -13,7 +13,7 @@
 <hr>
 <br>
 
-## 🙏 致谢（Acknowledgements）
+## 🙏 致谢
 - 特别感谢 **卡码笔记** 对学习的启发与帮助；本仓库部分思路与实现引用或借鉴了相关内容。  
   - 卡码笔记链接：[Kamacoder](https://kamacoder.com/)
 
@@ -22,7 +22,7 @@
 <hr>
 <br>
 
-## 📄 授权条款（License）
+## 📄 授权条款
 本仓库以 **MIT License** 授权开源；你可以自由地使用、复制、修改与分发本仓库内容，但需要保留版权与许可声明。  
 - 许可证文件：[`LICENSE`](./LICENSE)
 
