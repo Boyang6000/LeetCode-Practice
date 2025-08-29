@@ -3,15 +3,13 @@
 <br>
 
 ## 704. 二分查找
-- 题目链接：[LeetCode 704. Binary Search](https://leetcode.com/problems/binary-search/)
-- 关键词：Binary Search  
-
+- 题目链接：[**LeetCode 704. Binary Search**](https://leetcode.com/problems/binary-search/)
+- 关键词：**Binary Search**  
 
 <br>
 
 ## 💡 思路
 运用二分查找(Binary Search)，在 **左闭右闭区间** `[left, right]` 内查找 target：  
-
 
 <br>
 
@@ -35,3 +33,35 @@ class Solution {
         return -1;
     }
 }
+```
+
+<br>
+
+##  27. 移除元素
+- 题目链接：[**LeetCode 27. Remove Element**](https://leetcode.com/problems/remove-element/)
+- 关键词：**Two Pointers**
+
+<br>
+
+## 💡 思路
+运用Two Pointers，一个指针记录当前的index，另一个指针记录不需要remove的数量，如果当前index不需要remove，就放在另一个指针的位置然后update  
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public int removeElement(int[] nums, int val) {
+        int count = 0;
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] != val){
+                nums[count] = nums[i];
+                count++;
+            }
+        }
+
+        return count;
+    }
+}
+```
+
