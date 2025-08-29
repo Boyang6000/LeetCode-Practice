@@ -7,18 +7,22 @@
 - 关键词：Binary Search
 ---
 
+
+
 ## 💡 思路
 运用Binary Search，在左闭右闭的范围里，通过缩小左右之间的范围来确定target的位置
 
+
+
 ## 💻 代码实现
 ```java
-class Soluition{
+class Solution{
     public int search(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
 
         while(left <= right){
-            int middle = (left + right) / 2;
+            int middle = left + (right-left) / 2; //避免Integer Overflow
             if(nums[middle] > target){
                 right = middle - 1;
             }
