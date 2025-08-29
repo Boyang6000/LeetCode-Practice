@@ -37,30 +37,66 @@ class Solution {
 
 <br>
 
-##  27. 移除元素
-- 题目链接：[**LeetCode 27. Remove Element**](https://leetcode.com/problems/remove-element/)
-- 关键词：**Two Pointers**
+##  59. 螺旋矩阵II
+- 题目链接：[**LeetCode 59. Spiral Matrix II**](https://leetcode.com/problems/spiral-matrix-ii/)
+- 关键词：**Matrix**
 
 <br>
 
 ## 💡 思路
-运用Two Pointers，一个指针记录当前的index，另一个指针记录不需要remove的数量，如果当前index不需要remove，就放在另一个指针的位置然后update  
+这道题非常考察基本功，尤其是对循环的开始和结束节点的把握。首先先要判断这个matrix有几层，通过n/2来判断，然后将每一层的loop的开始点设为(startX,startY)，通过n-offset来设定每一段loop的结束点，然后以上右下左的顺序用四个loop来填写数字
+
+这里面四个循环填数字和一个loop结束后update每个值会比较容易搞混和遗忘
+
+另一个点就是要记住Matrix index的格式 (X,Y)
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int removeElement(int[] nums, int val) {
-        int count = 0;
-        for(int i = 0; i < nums.length; i++){
-            if(nums[i] != val){
-                nums[count] = nums[i];
+    public int[][] generateMatrix(int n) {
+        int[][] ans = new int[n][n];
+        int startX = 0;
+        int startY = 0;
+        int offset = 1;
+        int count = 1;
+        int loop = 1;
+        int i,j;
+
+        while(loop <= n/2){
+            for(j = startY; j < n - offset; j++){
+                ans[startX][j] = count;
                 count++;
             }
+
+            for(i = startX; i < n - offset; i++){
+                ans[i][j] = count;
+                count++;
+            }
+
+            for(;j > startY; j--){
+                ans[i][j] = count;
+                count++;
+            }
+
+            for(; i > startX; i--){
+                ans[i][startY] = count;
+                count++;
+            }
+
+            startX++;
+            startY++;
+            offset++;
+            loop++;
+
+        }
+           
+        if(n % 2 == 1){
+            ans[n/2][n/2] = n*n;
         }
 
-        return count;
+        return ans;
     }
 }
 ```
