@@ -83,7 +83,7 @@ class Solution {
 <br>
 
 ## 💡 思路  
-这道题的思路非常巧妙，将两个指针分别设置于两个链表的head，然后同时移动，当一个指针走到链表的结尾时，让他重新回到另一个链表的head，这样将两个链表链接起来，两个指针第二次经过相交点的路程就是一样的了。
+这道题的思路非常巧妙，第一次做的话基本上想不到，将两个指针分别设置于两个链表的head，然后同时移动，当一个指针走到链表的结尾时，让他重新回到另一个链表的head，这样将两个链表链接起来，两个指针第二次经过相交点的路程就是一样的了。
 
 <br>
 
@@ -106,5 +106,43 @@ public class Solution {
 
 <br>
 
+##  142. 环形链表II
+- 题目链接：[**LeetCode 142. Linked List II**]（https://leetcode.com/problems/linked-list-cycle-ii/）
+- 关键词：**Linked List, Two Pointers**
+
+<br>
+
+## 💡 思路  
+这道题的思路非常巧妙，第一次做的话基本上想不到，也非常的反直觉。先将快慢指针同时指向head，然后快指针每次移动两个node，慢指针每次移动一个node。如果快指针到结尾都没跟慢指针相遇，说明没有loop。如果快慢指针相遇了，说明有loop，此时再设定一个指针在head，然后这个指针跟慢指针每次移动一个node，最终他们会相遇在loop的开始点。
+
+<br>
+
+## 💻 代码实现
+```java
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while(fast != null && fast.next != null){
+            fast = fast.next.next;
+            slow = slow.next;
+
+            if(fast == slow){
+                ListNode target = head;
+                while(target != slow){
+                    target = target.next;
+                    slow = slow.next;
+                }
+                return target;
+            }
+        }
+        return null;
+    }
+}
+```
+
+<br>
+
 ## 📝 今日心得
-作为Day 1的题目，这三道题目都是比较基础的，其中Binary Search和Two Pointers这两个思想都是运用比较广泛的，这几道题目也是自己练过很多遍的，基本不会出现问题。希望能将这两个思路继续运用到别的不同的题目上面去
+今天的这四道题目相对而言是比较有难度的，如果是第一次做的话很难想到办法。其中160和142这两道比较的反直觉，需要做完多加深巩固印象，不是能靠暴力解决能实现的。在linked list里面比较重要的两点就是添加dummy node和使用快慢指针，会很方便。
