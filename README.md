@@ -11,6 +11,7 @@
 - 2025-08-28 · Day 2：日志 → [Day 2](Practice-Notes/Day2-Practice.md)
 - 2025-08-29 · Day 3：日志 → [Day 3](Practice-Notes/Day3-Practice.md)
 - 2025-08-30 · Day 4：日志 → [Day 4](Practice-Notes/Day4-Practice.md)
+- 2025-08-31 · Day 5：日志 → [Day 5](Practice-Notes/Day5-Practice.md)
 
 <br>
 <hr>
