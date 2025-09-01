@@ -81,30 +81,43 @@ class Solution {
 
 <br>
 
-##  160. 链表相交
-- 题目链接：[**LeetCode 160. Intersection of Two Linked Lists**](https://leetcode.com/problems/intersection-of-two-linked-lists/)
-- 关键词：**Linked List, Two Pointers**
+##  202. 快乐数
+- 题目链接：[**LeetCode 202. Happy Number**](https://leetcode.com/problems/happy-number/)
+- 关键词：**HashSet**
 
 <br>
 
 ## 💡 思路  
-这道题的思路非常巧妙，第一次做的话基本上想不到，将两个指针分别设置于两个链表的head，然后同时移动，当一个指针走到链表的结尾时，让他重新回到另一个链表的head，这样将两个链表链接起来，两个指针第二次经过相交点的路程就是一样的了。
+这道题先要去理解什么情况下是happy number什么情况下不是。当运算结果等于1的时候就是happy number，如果运算过程中出现了重复结果就不是。储存每次结果跟重复挂钩时优先考虑HashSet。
+
+这道题分为两步：
+- 先写一个method来运算happy。先算这个数字mod10剩下的余数，就是最右边的这个digit。然后平方再加入到sum里面去，最后将这个数字除以10，就进入到下一个digit的运算。重复循环直至所有digit的平方都加入到了sum里面。
+- 主要的method来看这个数字是否是happy number。先创建一个HashSet来储存所有出现的结果。当这个数字不等于1或者没有出现在HashSet里面时，将他加入到HashSet里，然后再进行happy运算，重复这个过程。
+
 
 <br>
 
 ## 💻 代码实现
 ```java
-public class Solution {
-    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-        ListNode p1 = headA;
-        ListNode p2 = headB;
-
-        while(p1 != p2){
-            p1 = p1 == null ? headB : p1.next;
-            p2 = p2 == null ? headA : p2.next;
+class Solution {
+    public boolean isHappy(int n) {
+        Set<Integer> check = new HashSet<>();
+        while(n != 1 && !(check.contains(n))){
+            check.add(n);
+            n = happy(n);
         }
 
-        return p1;
+        return n == 1;
+    }
+
+    public int happy(int n){
+        int sum = 0;
+        while(n > 0){
+            int digit = n % 10;
+            sum += digit * digit;
+            n = n / 10;
+        }
+        return sum;
     }
 }
 ```
