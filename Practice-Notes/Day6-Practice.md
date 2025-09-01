@@ -124,37 +124,33 @@ class Solution {
 
 <br>
 
-##  142. 环形链表II
-- 题目链接：[**LeetCode 142. Linked List II**]（https://leetcode.com/problems/linked-list-cycle-ii/）
-- 关键词：**Linked List, Two Pointers**
+##  1. 两数之和
+- 题目链接：[**LeetCode 1. Two Sum**]（https://leetcode.com/problems/two-sum/）
+- 关键词：**HashMap**
 
 <br>
 
 ## 💡 思路  
-这道题的思路非常巧妙，第一次做的话基本上想不到，也非常的反直觉。先将快慢指针同时指向head，然后快指针每次移动两个node，慢指针每次移动一个node。如果快指针到结尾都没跟慢指针相遇，说明没有loop。如果快慢指针相遇了，说明有loop，此时再设定一个指针在head，然后这个指针跟慢指针每次移动一个node，最终他们会相遇在loop的开始点。
+这道题是好几道经典题目的开始，比如三数之和和四数之和。创建一个HashMap来储存数字和他的index。计算target和当前index数字的差，如果他们的差在这个HashMap里，就return这两个数字的index。如果不在这个HashMap里面，就将当前的数字和他的index加入到HashMap里面。
 
 <br>
 
 ## 💻 代码实现
 ```java
-public class Solution {
-    public ListNode detectCycle(ListNode head) {
-        ListNode fast = head;
-        ListNode slow = head;
-
-        while(fast != null && fast.next != null){
-            fast = fast.next.next;
-            slow = slow.next;
-
-            if(fast == slow){
-                ListNode target = head;
-                while(target != slow){
-                    target = target.next;
-                    slow = slow.next;
-                }
-                return target;
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> check = new HashMap<>();
+        
+        for(int i = 0; i < nums.length; i++){
+            int diff = target - nums[i];
+            if(check.containsKey(diff)){
+                return new int[]{check.get(diff), i};
+            }
+            else{
+                check.put(nums[i], i);
             }
         }
+
         return null;
     }
 }
@@ -163,4 +159,4 @@ public class Solution {
 <br>
 
 ## 📝 今日心得
-今天的这四道题目相对而言是比较有难度的，如果是第一次做的话很难想到办法。其中160和142这两道比较的反直觉，需要做完多加深巩固印象，不是能靠暴力解决能实现的。在linked list里面比较重要的两点就是添加dummy node和使用快慢指针，会很方便。
+HashMap和HashSet一直以来就是我比较薄弱的地方，一方面是平时运用的少，另一方面是自己内心里还是有点恐惧这个题型，需要更多的练习巩固加强对HashMap和HashSet的运用。今天主要是帮助分别在什么情况下运用HashMap和HashSet，当需要考虑过滤重复值的时候运用HashSet，然后当需要考虑存储两个值，例如数字和他的index时，就需要运用HashMap。
