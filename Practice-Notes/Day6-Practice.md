@@ -9,7 +9,7 @@
 <br>
 
 ## 💡 思路
-这道题算是一个简化版的hashtable，先创建一个int list来存放每个字母出现的次数，然后循环s来看每个字母出现多少次，出现一次就在int list相对应的位置加1。然后再看t每个字母出现多少次，出现一次就在int list相对应的位置减1。最后来看是否int list里面每个数字都是0，如果不是就return false。
+这道题因为长度的限制，所以可以使用list来代替hashmap。先创建一个int list来存放每个字母出现的次数，然后循环s来看每个字母出现多少次，出现一次就在int list相对应的位置加1。然后再看t每个字母出现多少次，出现一次就在int list相对应的位置减1。最后来看是否int list里面每个数字都是0，如果不是就return false。
 
 <br>
 
@@ -39,37 +39,42 @@ class Solution {
 
 <br>
 
-##  19. 删除链表的倒数第N个节点
-- 题目链接：[**LeetCode 19. Remove Nth Node From End of List**](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
-- 关键词：**Linked List, Two Pointers**
+##  349. 两个数组的交集
+- 题目链接：[**LeetCode 349. Intersection of Two Arrays**](https://leetcode.com/problems/intersection-of-two-arrays/)
+- 关键词：**HashSet**
 
 <br>
 
 ## 💡 思路
-这道题第一次运用了快慢指针的思路，这个思路在linked list里面比较常见。首先加入**dummy node**， 将快慢指针同时指向dummy node，然后将快指针先移动n次，再同时移动快慢指针，当快指针到队尾时停下，此时慢指针正好指向要删除node前的一个node。
+因为HashSet不允许出现重复的值，重复的值添加进去将会被忽略，所以这里我们使用HashSet。先创建第一个HashSet，将nums1里面的数字都添加进去，然后再创建第二个HashSet，如果num2的数字出现在第一个HashSet里，将这个数字加入到第二个HashSet里面。这样既确保了这个数字同时出现在两个list里面，并且答案数字不会重复。最后将答案HashSet里面的数字转化成list。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public ListNode removeNthFromEnd(ListNode head, int n) {
-        ListNode dummy = new ListNode(0);
-        dummy.next = head;
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> check = new HashSet<>();
+        Set<Integer> ans = new HashSet<>();
 
-        ListNode slow = dummy;
-        ListNode fast = dummy;
-        for(int i = 0; i < n; i++){
-            fast = fast.next;
+        for(int i: nums1){
+            check.add(i);
         }
 
-        while(fast.next != null){
-            slow = slow.next;
-            fast = fast.next;
+        for(int j: nums2){
+            if(check.contains(j)){
+                ans.add(j);
+            }
         }
 
-        slow.next = slow.next.next;
-        return dummy.next;
+        int[] result = new int[ans.size()];
+        int count = 0;
+        for(int i: ans){
+            result[count] = i;
+            count++;
+        }
+
+        return result;
     }
 }
 ```
