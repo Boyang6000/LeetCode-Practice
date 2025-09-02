@@ -40,42 +40,38 @@ class Solution {
 
 <br>
 
-##  349. 两个数组的交集
-- 题目链接：[**LeetCode 349. Intersection of Two Arrays**](https://leetcode.com/problems/intersection-of-two-arrays/)
-- 关键词：**HashSet**
+## 383. 赎金信
+- 题目链接：[**LeetCode 383. Ransom Note**](https://leetcode.com/problems/ransom-note/)
+- 关键词：**List**
 
 <br>
 
 ## 💡 思路
-因为HashSet不允许出现重复的值，重复的值添加进去将会被忽略，所以这里我们使用HashSet。先创建第一个HashSet，将nums1里面的数字都添加进去，然后再创建第二个HashSet，如果num2的数字出现在第一个HashSet里，将这个数字加入到第二个HashSet里面。这样既确保了这个数字同时出现在两个list里面，并且答案数字不会重复。最后将答案HashSet里面的数字转化成list。
+本题和 242.有效的字母异位词 是一个思路, 建立一个int list，然后将ransomNote字母出现的次数放到list里面，再把magazine字母出现的次数减去，最后看list里面是否有大于0的数字，大于0说明不满足条件。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[] intersection(int[] nums1, int[] nums2) {
-        Set<Integer> check = new HashSet<>();
-        Set<Integer> ans = new HashSet<>();
-
-        for(int i: nums1){
-            check.add(i);
+    public boolean canConstruct(String ransomNote, String magazine) {
+        if (ransomNote.length() > magazine.length()) {
+            return false;
         }
+        int[] check = new int[26];
 
-        for(int j: nums2){
-            if(check.contains(j)){
-                ans.add(j);
+        for(int i = 0; i < ransomNote.length(); i++){
+            check[ransomNote.charAt(i) - 'a']++;
+        }
+        for(int j = 0; j < magazine.length(); j++){
+            check[magazine.charAt(j) - 'a']--;
+        }
+        for(int i: check){
+            if(i > 0){
+                return false;
             }
         }
-
-        int[] result = new int[ans.size()];
-        int count = 0;
-        for(int i: ans){
-            result[count] = i;
-            count++;
-        }
-
-        return result;
+        return true;
     }
 }
 ```
