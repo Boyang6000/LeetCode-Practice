@@ -2,37 +2,38 @@
 
 <br>
 
-## 242. 有效的字母异位词
-- 题目链接：[**LeetCode 242. Valid Anagram**](https://leetcode.com/problems/valid-anagram/)
-- 关键词：**HashTable**  
+## 454. 四数相加II
+- 题目链接：[**LeetCode 454. 4 Sum II**](https://leetcode.com/problems/4sum-ii/)
+- 关键词：**HashMap**  
 
 <br>
 
 ## 💡 思路
-这道题因为长度的限制，所以可以使用list来代替hashmap。先创建一个int list来存放每个字母出现的次数，然后循环s来看每个字母出现多少次，出现一次就在int list相对应的位置加1。然后再看t每个字母出现多少次，出现一次就在int list相对应的位置减1。最后来看是否int list里面每个数字都是0，如果不是就return false。
+这道题就是比较经典需要用到HashMap的题目，先将前两个数相加，然后把相加的结果和出现次数放到HashMap里面，再把后两个数相加的相反数算出来，看这个相反数在HashMap里出现几次，将次数加到最终答案里。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean isAnagram(String s, String t) {
-        int[] ans = new int[26];
-
-        for(int i = 0; i < s.length(); i++){
-            ans[s.charAt(i) - 'a']++;
-        }
-
-        for(int j = 0; j < t.length(); j++){
-            ans[t.charAt(j) - 'a']--;
-        }
-
-        for(int k: ans){
-            if(k != 0){
-                return false;
+    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
+        int count = 0;
+        Map<Integer, Integer> check = new HashMap<>();
+        
+        for(int i: nums1){
+            for(int j: nums2){
+                int sum = i + j;
+                check.put(sum, check.getOrDefault(sum, 0) + 1);
             }
         }
-        return true;
+
+        for(int m: nums3){
+            for(int n: nums4){
+                count += check.getOrDefault(0-m-n, 0);
+            }
+        }
+
+        return count;
     }
 }
 ```
