@@ -13,6 +13,7 @@
 - 2025-08-30 · Day 4：日志 → [Day 4](Practice-Notes/Day4-Practice.md)
 - 2025-08-31 · Day 5：日志 → **周日休息日**
 - 2025-09-01 · Day 6：日志 → [Day 6](Practice-Notes/Day6-Practice.md)
+- 2025-09-02 · Day 7：日志 → [Day 7](Practice-Notes/Day7-Practice.md)
 
 <br>
 <hr>
