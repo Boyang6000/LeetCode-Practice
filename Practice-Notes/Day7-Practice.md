@@ -78,77 +78,117 @@ class Solution {
 
 <br>
 
-##  202. 快乐数
-- 题目链接：[**LeetCode 202. Happy Number**](https://leetcode.com/problems/happy-number/)
-- 关键词：**HashSet**
+##  15. 三数之和
+- 题目链接：[**LeetCode 15. 3Sum**](https://leetcode.com/problems/3sum/)
+- 关键词：**Two Pointers**
 
 <br>
 
 ## 💡 思路  
-这道题先要去理解什么情况下是happy number什么情况下不是。当运算结果等于1的时候就是happy number，如果运算过程中出现了重复结果就不是。储存每次结果跟重复挂钩时优先考虑HashSet。
-
-这道题分为两步：
-- 先写一个method来运算happy。先算这个数字mod10剩下的余数，就是最右边的这个digit。然后平方再加入到sum里面去，最后将这个数字除以10，就进入到下一个digit的运算。重复循环直至所有digit的平方都加入到了sum里面。
-- 主要的method来看这个数字是否是happy number。先创建一个HashSet来储存所有出现的结果。当这个数字不等于1或者没有出现在HashSet里面时，将他加入到HashSet里，然后再进行happy运算，重复这个过程。
-
+这道题用Two Pointers会比较快捷。先将整个list sort，然后从第一个数字开始循环，先判断第一个数字是不是大于0，如果大于0的话，因为已经排过序了，所以后续不可能有数字满足这个条件。再判断第一个数字是否跟之前做过循环的数字有重复，重复就跳过。确认完毕之后进入双指针环节，设定left为i+1， right为右边最后一个数字，然后看他们的sum跟0的关系来调整left and right。满足条件之后放入答案里，再对left和right进行去重，重复就跳过。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean isHappy(int n) {
-        Set<Integer> check = new HashSet<>();
-        while(n != 1 && !(check.contains(n))){
-            check.add(n);
-            n = happy(n);
-        }
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(nums);
 
-        return n == 1;
-    }
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] > 0){
+                return ans;
+            }
+            if(i > 0 && nums[i-1] == nums[i]){
+                continue;
+            }
 
-    public int happy(int n){
-        int sum = 0;
-        while(n > 0){
-            int digit = n % 10;
-            sum += digit * digit;
-            n = n / 10;
+            int left = i + 1;
+            int right = nums.length - 1;
+            while(left < right){
+                int sum = nums[i] + nums[left] + nums[right];
+                if(sum > 0){
+                    right--;
+                }
+                else if(sum < 0){
+                    left++;
+                }
+                else{
+                    ans.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                    while(left < right && nums[left] == nums[left + 1]){
+                        left++;
+                    }
+                    while(left < right && nums[right - 1] == nums[right]){
+                        right--;
+                    }
+
+                    left++;
+                    right--;
+                }
+            } 
         }
-        return sum;
+        return ans;
     }
 }
 ```
 
 <br>
 
-##  1. 两数之和
-- 题目链接：[**LeetCode 1. Two Sum**]（https://leetcode.com/problems/two-sum/）
-- 关键词：**HashMap**
+##  18. 四数之和
+- 题目链接：[**LeetCode 18. 4Sum**]（https://leetcode.com/problems/4sum/）
+- 关键词：**Two Pointers**
 
 <br>
 
 ## 💡 思路  
-这道题是好几道经典题目的开始，比如三数之和和四数之和。创建一个HashMap来储存数字和他的index。计算target和当前index数字的差，如果他们的差在这个HashMap里，就return这两个数字的index。如果不在这个HashMap里面，就将当前的数字和他的index加入到HashMap里面。
+这道题跟三数之和一样的，只不过就是多加一层循环。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[] twoSum(int[] nums, int target) {
-        Map<Integer, Integer> check = new HashMap<>();
-        
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> ans = new ArrayList<>();
+        Arrays.sort(nums);
+
         for(int i = 0; i < nums.length; i++){
-            int diff = target - nums[i];
-            if(check.containsKey(diff)){
-                return new int[]{check.get(diff), i};
+            if(nums[i] > target && nums[i] > 0){
+                return ans;
             }
-            else{
-                check.put(nums[i], i);
+            if(i > 0 && nums[i-1] == nums[i]){
+                continue;
+            }
+            for(int j = i + 1; j < nums.length; j++){
+                if(nums[i] + nums[j] > target && nums[i] + nums[j] > 0){
+                    break;
+                }
+                if(j > i+1 && nums[j-1] == nums[j]){
+                    continue;
+                }
+
+                int left = j+1;
+                int right = nums.length - 1;
+                while(left < right){
+                    int sum = nums[i] + nums[j] + nums[left] + nums[right];
+                    if(sum > target){
+                        right--;
+                    }
+                    else if(sum < target){
+                        left++;
+                    }
+                    else{
+                        ans.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+                        while(left < right && nums[left] == nums[left+1]) left++;
+                        while(left < right && nums[right-1] == nums[right]) right--;
+                        left++;
+                        right--;
+                    }
+                }
             }
         }
-
-        return null;
+        return ans;
     }
 }
 ```
@@ -156,4 +196,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-HashMap和HashSet一直以来就是我比较薄弱的地方，一方面是平时运用的少，另一方面是自己内心里还是有点恐惧这个题型，需要更多的练习巩固加强对HashMap和HashSet的运用。今天主要是帮助分别在什么情况下运用HashMap和HashSet，当需要考虑过滤重复值的时候运用HashSet，然后当需要考虑存储两个值，例如数字和他的index时，就需要运用HashMap。
+三数之和和四数之和虽然看起来代码量比较吓人，但实际理解起来没有那么复杂，多多练习对于edge case的敏感度。HashMap和HashSet的一些特殊method，像getOrDefault这些，也需要多练多记。
