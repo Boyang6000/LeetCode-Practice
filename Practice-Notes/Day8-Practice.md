@@ -1,39 +1,32 @@
-# 📝 LeetCode 学习日志 Day 7
+# 📝 LeetCode 学习日志 Day 8
 
 <br>
 
-## 454. 四数相加II
-- 题目链接：[**LeetCode 454. 4 Sum II**](https://leetcode.com/problems/4sum-ii/)
-- 关键词：**HashMap**  
+## 344. 反转字符串
+- 题目链接：[**LeetCode 344. Reverse String**](https://leetcode.com/problems/reverse-string/)
+- 关键词：**String**  
 
 <br>
 
 ## 💡 思路
-这道题就是比较经典需要用到HashMap的题目，先将前两个数相加，然后把相加的结果和出现次数放到HashMap里面，再把后两个数相加的相反数算出来，看这个相反数在HashMap里出现几次，将次数加到最终答案里。
+这个就是最基础的swap的运用，设定一个temp来储存值，然后将左边的值放到temp里面，再把右边的值赋给左边，最后把temp的值赋给右边就行
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int fourSumCount(int[] nums1, int[] nums2, int[] nums3, int[] nums4) {
-        int count = 0;
-        Map<Integer, Integer> check = new HashMap<>();
-        
-        for(int i: nums1){
-            for(int j: nums2){
-                int sum = i + j;
-                check.put(sum, check.getOrDefault(sum, 0) + 1);
-            }
-        }
+    public void reverseString(char[] s) {
+        int left = 0;
+        int right = s.length - 1;
 
-        for(int m: nums3){
-            for(int n: nums4){
-                count += check.getOrDefault(0-m-n, 0);
-            }
+        while(left < right){
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left++;
+            right--;
         }
-
-        return count;
     }
 }
 ```
