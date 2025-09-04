@@ -2,30 +2,70 @@
 
 <br>
 
-## 344. 反转字符串
-- 题目链接：[**LeetCode 344. Reverse String**](https://leetcode.com/problems/reverse-string/)
-- 关键词：**String**  
+## 151. 翻转字符串里的单词
+- 题目链接：[**LeetCode 151. Reverse Words in a String**](https://leetcode.com/problems/reverse-words-in-a-string/)
+- 关键词：**String, Two Pointers**  
 
 <br>
 
 ## 💡 思路
-这个就是最基础的swap的运用，设定一个temp来储存值，然后将左边的值放到temp里面，再把右边的值赋给左边，最后把temp的值赋给右边就行
+这道题比较的繁琐，主要是有三个步骤：
+ 
+ - 去除掉多余的空格：
+     - 设定一个start指向string的开始，end指向string的末尾，先去除开始和结尾的空格，当start指向第一个字母和end指向最后一个字母时，创建一个新的StringBuilder，将所有字母加入进去，中间多的空格跳过。
+
+ - 反转整个String：
+     - 跟swap一样。
+
+ - 反转每个单词：采用双指针的办法，设定start = 0， end = 1，然后先让end找到单词末尾的空格，然后在这个范围里进行反转整个String，然后移动start和end直至start和end到结尾。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public void reverseString(char[] s) {
-        int left = 0;
-        int right = s.length - 1;
+    public String reverseWords(String s) {
+        StringBuilder sb = removeExtraSpace(s);
+        reverseString(sb, 0, sb.length() - 1);
+        reverseEachWord(sb);
+        return sb.toString();
+    }
 
-        while(left < right){
-            char temp = s[left];
-            s[left] = s[right];
-            s[right] = temp;
-            left++;
-            right--;
+    private StringBuilder removeExtraSpace(String s){
+        int start = 0;
+        int end = s.length() -1;
+        while(s.charAt(start) == ' ') start++;
+        while(s.charAt(end) == ' ') end--;
+        StringBuilder sb = new StringBuilder();
+        while(start <= end){
+            char c = s.charAt(start);
+            if(c != ' ' || s.charAt(start - 1) != ' '){
+                sb.append(c);
+            }
+            start++;
+        }
+        return sb;
+    }
+
+    public void reverseString(StringBuilder sb, int start, int end){
+        while(start < end){
+            char temp = sb.charAt(start);
+            sb.setCharAt(start, sb.charAt(end));
+            sb.setCharAt(end, temp);
+            start++;
+            end--;
+        }
+    }
+
+    public void reverseEachWord(StringBuilder sb){
+        int start = 0;
+        int end = 1;
+        int n = sb.length();
+        while(start < n){
+            while(end < n && sb.charAt(end) != ' ') end++;
+            reverseString(sb, start, end-1);
+            start = end + 1;
+            end = start + 1;
         }
     }
 }
