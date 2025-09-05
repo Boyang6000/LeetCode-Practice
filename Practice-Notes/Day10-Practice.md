@@ -98,7 +98,7 @@ class MyStack {
 
 ## 20. 有效的括号
 - 题目链接：[**LeetCode 20. Valid Parentheses**](https://leetcode.com/problems/valid-parentheses/description/)
-- 关键词：**Deque, LinkedList**
+- 关键词：**Deque, ArrayDeque**
 
 <br>
 
@@ -135,5 +135,44 @@ class Solution {
 
 <br>
 
+## 1047. 删除字符串中的所有相邻重复项
+- 题目链接：[**LeetCode 1047. Remove All Adjacent Duplicates in String**](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
+- 关键词：**ArrayDeque**
+
+<br>
+
+## 💡 思路
+这道题也是一个stack的运用，这里用ArrayDeque来实现stack的功能。
+
+先创建一个ArrayDeque，如果stack里面最后一位跟即将加入的字母一样，那么直接去除最后一位。如果不是前面这种情况则直接加入新的字母。最后将stack里面的字母转化为string。
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public String removeDuplicates(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for(int i = 0; i < s.length(); i++){
+            if(!stack.isEmpty() && stack.peekLast() == s.charAt(i)){
+                stack.pollLast();
+            }
+            else{
+                stack.addLast(s.charAt(i));
+            }
+        }
+        
+        StringBuilder sb = new StringBuilder();
+        for (char c : stack) {
+            sb.append(c);
+            }
+        return sb.toString();
+    }
+}
+
+```
+
+<br>
+
 ## 📝 今日心得
-今天的这两道KMP算法相当有难度，有时间时需要多复习加深印象，主要就是要理解Next数组是如何计算的，然后回退到前缀的index又是具体怎么操作的，第一次不理解没关系，重复多次硬啃下来还是可以的。
+对于stack和queue的实现还是不太熟悉和熟练。基本上用的最多的就是Deque来实现stack和queue，因为他可以在两端增加删除element，其中用的比较多的就是ArrayDeque，LinkedList用的少一些。可以多加练习和熟练每个类型里面可以使用的method。
