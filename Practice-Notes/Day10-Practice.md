@@ -53,105 +53,84 @@ class MyQueue {
 
 <br>
 
-## 28. 实现 strStr()
-- 题目链接：[**LeetCode 28. Find the Index of the First Occurance in a String**](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
-- 关键词：**KMP Algorithm**
+## 225. 用队列实现栈
+- 题目链接：[**LeetCode 225. Implement Stack Using Queues**](https://leetcode.com/problems/implement-stack-using-queues/)
+- 关键词：**Deque, ArrayDeque, Stack**
 
 <br>
 
 ## 💡 思路
-这道题是非常经典用到KMP算法的，KMP主要运用在字符串匹配上，KMP的主要思想是**当出现字符串不匹配时，可以知道一部分之前已经匹配的文本内容，可以利用这些信息避免从头再去做匹配了**。KMP算法是相当有难度去理解的，主要运用到的就是Next数组，也就是前缀表。
+这道题用Deque中的ArrayDeque来实现，因为ArrayDeque可以在首位和末尾进行push，pop，peek，比较方便
 
-Next数组该如何实现呢？在这道题当中，设定一个指针指向前缀的末尾，另一个指针循环指向后缀的末尾，当前后缀末尾相等时，前缀末尾指针increment,直至最后，这样模式串的前缀表就生成好了。
+这里面的offer跟push相同，push失败的时候会throw execption，offer失败时会return false。
 
-然后开始进行字符串匹配，当出现字符串不匹配时，模式串会跳回之前一个index前缀的字符来继续进行匹配。
-
-这就是KMP的算法精髓了。
+这里在push的时候就将里面元素的顺序反过来了，满足stack先进后出的原则
 
 <br>
 
 ## 💻 代码实现
 ```java
-class Solution {
-    public int strStr(String haystack, String needle) {
-        if(needle.length() == 0) return 0;
-        int[] next = new int[needle.length()];
-        getNext(next, needle);
+class MyStack {
+    private Deque<Integer> q = new ArrayDeque<>();
 
-        int j = 0;
-        for(int i = 0; i < haystack.length(); i++){
-            while(j > 0 && needle.charAt(j) != haystack.charAt(i)){
-                j = next[j - 1];
-            }
-            if(needle.charAt(j) == haystack.charAt(i)){
-                j++;
-            }
-            if(j == needle.length()){
-                return i - needle.length() + 1;
-            }
+    public void push(int x) {
+        q.offer(x);
+        for (int i = 0; i < q.size() - 1; i++) {
+            q.offer(q.poll());
         }
-        return -1;
     }
 
-    public void getNext(int[] next, String needle){
-        int j = 0;
-        next[0] = 0;
-        for(int i = 1; i < needle.length(); i++){
-            while(j > 0 && needle.charAt(i) != needle.charAt(j)){
-                j = next[j-1];
-            }
-            if(needle.charAt(i) == needle.charAt(j)){
-                j++;
-            }
-            next[i] = j;
-        }
+    public int pop() {
+        return q.poll();
+    }
+
+    public int top() {
+        return q.peek();
+    }
+
+    public boolean empty() {
+        return q.isEmpty();
     }
 }
 ```
 
 <br>
 
-## 459. 重复的子字符串
-- 题目链接：[**LeetCode 459. Repeated Substring Pattern**](https://leetcode.com/problems/repeated-substring-pattern/)
-- 关键词：**KMP Algorithm**
+## 20. 有效的括号
+- 题目链接：[**LeetCode 20. Valid Parentheses**](https://leetcode.com/problems/valid-parentheses/description/)
+- 关键词：**Deque, LinkedList**
 
 <br>
 
 ## 💡 思路
-这道题同28一样也是运用到了KMP算法。关于KMP算法的应用可以详细看28题。
+这道题就是对于stack的运用，stack通常在括号匹配中使用，这里我们通过ArrayDeque来实现stack的功能。
 
-这道题先创建了next数组表，然后看最后一个数字的前缀是否满足重复：
- - 是否大于0
- - 整个长度减去前缀之后是否还能被整个长度整除
+当遇到一个左括号时，我们就把相对应的右括号加入到stack里面。
+
+三种情况会return false：
+ - 左括号多于右括号
+ - 右括号多于左括号
+ - 括号类型不匹配
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean repeatedSubstringPattern(String s) {
-        int[] next = new int[s.length()];
-        int j = 0;
-        int n = s.length();
-        next[0] = 0;
-        for(int i = 1; i < n; i++){
-            while(j > 0 && s.charAt(i) != s.charAt(j)){
-                j = next[j-1];
-            }
-            if(s.charAt(i) == s.charAt(j)){
-                j++;
-            }
-            next[i] = j;
+    public boolean isValid(String s) {
+        Deque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == '(') stack.push(')');
+            else if (ch == '{') stack.push('}');
+            else if (ch == '[') stack.push(']');
+            else if (stack.isEmpty() || stack.peek() != ch) return false;
+            else stack.pop();
         }
-        
-        if (next[n - 1] > 0 && n % (n - next[n - 1]) == 0) {
-            return true; 
-        } 
-        else {
-            return false;
-        }
+        return stack.isEmpty();
     }
 }
+
 ```
 
 <br>
