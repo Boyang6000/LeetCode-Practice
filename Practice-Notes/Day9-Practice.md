@@ -73,35 +73,52 @@ class Solution {
 
 <br>
 
-## 541. 反转字符串 II
-- 题目链接：[**LeetCode 541. Reverse String II**](https://leetcode.com/problems/reverse-string-ii/)
-- 关键词：**String**
+## 28. 实现 strStr()
+- 题目链接：[**LeetCode 28. Find the Index of the First Occurance in a String**](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
+- 关键词：**KMP Algorithm**
 
 <br>
 
 ## 💡 思路
-本题在344的基础上做了一些变动，核心方法还是swap的运用。首先，在Java里，**String 是不可变的**，所以我们得先把它变成char[], 或者可以使用StringBuilder来实现。我们这里选择的是用char[]，然后这道题是以2k长度为一个整体，那left每次开始就要加2k，right的值根据left走，或者整体长度不足k时right为最后一个数字，根据这个left和right来进行swap。最后将char[]重新变成string就行。
+
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public String reverseStr(String s, int k) {
-        char[] arr = s.toCharArray();
-        for(int i = 0; i < s.length(); i+=2*k){
-            int left = i;
-            int right = Math.min(i+k-1, arr.length - 1);
-            while(left < right){
-                char temp = arr[left];
-                arr[left] = arr[right];
-                arr[right] = temp;
-                left++;
-                right--;
+    public int strStr(String haystack, String needle) {
+        if(needle.length() == 0) return 0;
+        int[] next = new int[needle.length()];
+        getNext(next, needle);
+
+        int j = 0;
+        for(int i = 0; i < haystack.length(); i++){
+            while(j > 0 && needle.charAt(j) != haystack.charAt(i)){
+                j = next[j - 1];
+            }
+            if(needle.charAt(j) == haystack.charAt(i)){
+                j++;
+            }
+            if(j == needle.length()){
+                return i - needle.length() + 1;
             }
         }
+        return -1;
+    }
 
-        return new String(arr);
+    public void getNext(int[] next, String needle){
+        int j = 0;
+        next[0] = 0;
+        for(int i = 1; i < needle.length(); i++){
+            while(j > 0 && needle.charAt(i) != needle.charAt(j)){
+                j = next[j-1];
+            }
+            if(needle.charAt(i) == needle.charAt(j)){
+                j++;
+            }
+            next[i] = j;
+        }
     }
 }
 ```
