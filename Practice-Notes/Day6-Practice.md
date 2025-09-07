@@ -1,4 +1,4 @@
-# 📝 LeetCode 学习日志 Day 4
+# 📝 LeetCode 学习日志 Day 6
 
 <br>
 
