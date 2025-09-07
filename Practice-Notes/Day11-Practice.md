@@ -47,43 +47,44 @@ class Solution {
 
 <br>
 
-## 225. 用队列实现栈
-- 题目链接：[**LeetCode 225. Implement Stack Using Queues**](https://leetcode.com/problems/implement-stack-using-queues/)
-- 关键词：**Deque, ArrayDeque, Stack**
+## 239. 滑动窗口最大值
+- 题目链接：[**LeetCode 239. Sliding Window Maximum**](https://leetcode.com/problems/sliding-window-maximum/)
+- 关键词：**Deque, ArrayDeque**
 
 <br>
 
 ## 💡 思路
-这道题用Deque中的ArrayDeque来实现，因为ArrayDeque可以在首位和末尾进行push，pop，peek，比较方便
-
-这里面的offer跟push相同，push失败的时候会throw execption，offer失败时会return false。
-
-这里在push的时候就将里面元素的顺序反过来了，满足stack先进后出的原则
+这道题比较的有难度。需要用到单调队列的思想。建立一个deque单调队列，从大到小来放index，当deque里第一个index不在sliding window的范围时poll出来。当deque的末尾数字小于将要加进去的数字时，将末尾数字poll出来，因为他永远不可能成为sliding window里最大的数字。将这个index加入到deque里面。当循环进入sliding window时，每一次移动窗口都把最大的数字，也就是deque的最前端，加入到答案里面去。
 
 <br>
 
 ## 💻 代码实现
 ```java
-class MyStack {
-    private Deque<Integer> q = new ArrayDeque<>();
+class Solution {
+    public int[] maxSlidingWindow(int[] nums, int k) {
+        int length = nums.length;
+        int[] ans = new int[length - k + 1];
+        int count = 0;
+        Deque<Integer> deque = new ArrayDeque<>();
 
-    public void push(int x) {
-        q.offer(x);
-        for (int i = 0; i < q.size() - 1; i++) {
-            q.offer(q.poll());
+        for(int i = 0; i < nums.length; i++){
+            while(!deque.isEmpty() && deque.peek() < i - k + 1){
+                deque.poll();
+            }
+
+            while(!deque.isEmpty() && nums[deque.peekLast()] < nums[i]){
+                deque.pollLast();
+            }
+
+            deque.offer(i);
+
+            if(i >= k - 1){
+                ans[count] = nums[deque.peek()];
+                count++;
+            }
         }
-    }
 
-    public int pop() {
-        return q.poll();
-    }
-
-    public int top() {
-        return q.peek();
-    }
-
-    public boolean empty() {
-        return q.isEmpty();
+        return ans;
     }
 }
 ```
