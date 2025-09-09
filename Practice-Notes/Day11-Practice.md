@@ -91,83 +91,53 @@ class Solution {
 
 <br>
 
-## 20. 有效的括号
-- 题目链接：[**LeetCode 20. Valid Parentheses**](https://leetcode.com/problems/valid-parentheses/description/)
-- 关键词：**Deque, ArrayDeque**
+## 347.前 K 个高频元素
+- 题目链接：[**LeetCode 347. Top K Frequent Elements**](https://leetcode.com/problems/top-k-frequent-elements/)
+- 关键词：**PriorityQueue**
 
 <br>
 
 ## 💡 思路
-这道题就是对于stack的运用，stack通常在括号匹配中使用，这里我们通过ArrayDeque来实现stack的功能。
+这道题比较的有难度，第一次做可能做不出来。这道题需要同时考虑出现频率最高的元素和出现的频率，所以这里采用的是Min-Heap的方式，通过PriorityQueue来实现。
 
-当遇到一个左括号时，我们就把相对应的右括号加入到stack里面。
-
-三种情况会return false：
- - 左括号多于右括号
- - 右括号多于左括号
- - 括号类型不匹配
+先用一个Map来统计所有的元素以及他的出现频率，然后用PriorityQueue的方式，将元素和频率看作一个int数组，进行排序，当pq的size小于k，加入map里的元素，当size超过k时，如果新的元素频率大于pq里最小的频率，则update。最后将pq里的数字导出到一个int数组里。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean isValid(String s) {
-        Deque<Character> stack = new ArrayDeque<>();
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (ch == '(') stack.push(')');
-            else if (ch == '{') stack.push('}');
-            else if (ch == '[') stack.push(']');
-            else if (stack.isEmpty() || stack.peek() != ch) return false;
-            else stack.pop();
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for(int num: nums){
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
-        return stack.isEmpty();
-    }
-}
 
-```
-
-<br>
-
-## 1047. 删除字符串中的所有相邻重复项
-- 题目链接：[**LeetCode 1047. Remove All Adjacent Duplicates in String**](https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/)
-- 关键词：**ArrayDeque**
-
-<br>
-
-## 💡 思路
-这道题也是一个stack的运用，这里用ArrayDeque来实现stack的功能。
-
-先创建一个ArrayDeque，如果stack里面最后一位跟即将加入的字母一样，那么直接去除最后一位。如果不是前面这种情况则直接加入新的字母。最后将stack里面的字母转化为string。
-
-<br>
-
-## 💻 代码实现
-```java
-class Solution {
-    public String removeDuplicates(String s) {
-        Deque<Character> stack = new ArrayDeque<>();
-        for(int i = 0; i < s.length(); i++){
-            if(!stack.isEmpty() && stack.peekLast() == s.charAt(i)){
-                stack.pollLast();
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
+            if(pq.size() < k){
+                pq.add(new int[]{entry.getKey(), entry.getValue()});
             }
             else{
-                stack.addLast(s.charAt(i));
+                if(entry.getValue() > pq.peek()[1]){
+                    pq.poll();
+                    pq.add(new int[]{entry.getKey(), entry.getValue()});
+                }
             }
         }
-        
-        StringBuilder sb = new StringBuilder();
-        for (char c : stack) {
-            sb.append(c);
-            }
-        return sb.toString();
+
+        int[] res = new int[k];
+
+        for(int i = k-1; i >= 0; i--){
+            res[i] = pq.poll()[0];
+        }
+
+        return res;
     }
 }
-
 ```
 
 <br>
 
 ## 📝 今日心得
-对于stack和queue的实现还是不太熟悉和熟练。基本上用的最多的就是Deque来实现stack和queue，因为他可以在两端增加删除element，其中用的比较多的就是ArrayDeque，LinkedList用的少一些。可以多加练习和熟练每个类型里面可以使用的method。
+今天的题目还是相对比较有难度的，第一次做的时候不容易想出来。今天做题时发现还是对stack和queue的一些功能不是很熟悉，比如push是stack用来加元素的，而queue会用add/offer，deque和queue一样，然后priorityqueue是用add。今天还涉及到了priorityqueue来实现Min-Heap，也算是复习和重新捡起印象，多练就会熟练了。
