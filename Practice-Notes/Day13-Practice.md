@@ -33,6 +33,31 @@ class Solution {
 }
 ```
 
+### 迭代法
+
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+        if(root == null) return result;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            if(node.right != null){
+                stack.push(node.right);
+            }
+            if(node.left != null){
+                stack.push(node.left);
+            }
+        }
+
+        return result;
+    }
+}
+```
+
 <br>
 
 ## 145. 二叉树的后序遍历
@@ -47,6 +72,9 @@ class Solution {
 <br>
 
 ## 💻 代码实现
+
+### 递归法
+
 ```java
 class Solution {
     public List<Integer> postorderTraversal(TreeNode root) {
@@ -60,6 +88,27 @@ class Solution {
         postorder(root.left, result);
         postorder(root.right, result);
         result.add(root.val);
+    }
+}
+```
+
+### 迭代法
+
+```java
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        List<Integer> result = new ArrayList<>();
+        if(root == null) return result;
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            if(node.left != null) stack.push(node.left);
+            if(node.right != null) stack.push(node.right);
+        }
+        Collections.reverse(result);
+        return result;    
     }
 }
 ```
@@ -78,6 +127,9 @@ class Solution {
 <br>
 
 ## 💻 代码实现
+
+### 递归法
+
 ```java
 class Solution {
     public List<Integer> inorderTraversal(TreeNode root) {
@@ -91,6 +143,30 @@ class Solution {
         inorder(root.left, result);
         result.add(root.val);
         inorder(root.right, result);
+    }
+}
+```
+
+### 迭代法
+
+```java
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        TreeNode cur = root;
+        while(cur != null || !stack.isEmpty()){
+            if(cur != null){
+                stack.push(cur);
+                cur = cur.left;
+            }
+            else{
+                cur = stack.pop();
+                result.add(cur.val);
+                cur = cur.right;
+            }
+        }
+        return result;
     }
 }
 ```
