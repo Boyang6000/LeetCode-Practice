@@ -302,22 +302,29 @@ class Solution {
 class Solution {
     List<List<Integer>> resList = new ArrayList<List<Integer>>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        BFS(root, 0);
+        BFS(root);
         return resList;
     }
 
-    public void BFS(TreeNode node, int deep){
+    public void BFS(TreeNode node){
+        Queue<TreeNode> queue = new LinkedList<>();
         if(node == null) return;
-        deep++;
+        queue.offer(node);
 
-        if(resList.size() < deep){
+        while(!queue.isEmpty()){
             List<Integer> item = new ArrayList<>();
+            int len = queue.size();
+            while(len > 0){
+                TreeNode tempNode = queue.poll();
+                item.add(tempNode.val);
+
+                if(tempNode.left != null) queue.offer(tempNode.left);
+                if(tempNode.right != null) queue.offer(tempNode.right);
+
+                len--;
+            }
             resList.add(item);
         }
-        resList.get(deep - 1).add(node.val);
-
-        BFS(node.left, deep);
-        BFS(node.right, deep);
     }
 }
 ```
