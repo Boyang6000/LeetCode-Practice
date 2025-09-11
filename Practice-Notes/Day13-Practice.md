@@ -282,4 +282,44 @@ class Solution {
 
 <br>
 
+## 102. 二叉树的层序遍历
+- 题目链接：[**LeetCode 102. Binary Tree Level Order Traversal**](https://leetcode.com/problems/binary-tree-level-order-traversal/)
+- 关键词：**Binary Tree, Recursion**
+
+<br>
+
+## 💡 思路
+这道题是采用了recursion的办法来实现BFS遍历整个tree。
+
+先创建一个通用的resList，然后创建一个BFS method。如果当前node是null，就直接return，不是的话层数加1。如果resList的size小于层数，说明答案里面的int list不够多，就增加一个list到resList里面去。最后把node的值放到相对应的resList里的list里面，然后重复recursion。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    List<List<Integer>> resList = new ArrayList<List<Integer>>();
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        BFS(root, 0);
+        return resList;
+    }
+
+    public void BFS(TreeNode node, int deep){
+        if(node == null) return;
+        deep++;
+
+        if(resList.size() < deep){
+            List<Integer> item = new ArrayList<>();
+            resList.add(item);
+        }
+        resList.get(deep - 1).add(node.val);
+
+        BFS(node.left, deep);
+        BFS(node.right, deep);
+    }
+}
+```
+
 ## 📝 今日心得
