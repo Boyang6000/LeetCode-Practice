@@ -408,4 +408,41 @@ class Solution {
 }
 ```
 
+## 637.二叉树的层平均值：
+- 题目链接：[**LeetCode 637. Average of Levels in Binary Tree**](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
+- 关键词：**Binary Tree, Queue, DFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，用Queue做DFS，先得出每一层的size，然后把一层里node的value加在一起做average。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        List<Double> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root == null) return list;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelSize = queue.size();
+            Double sum = 0.0;
+            for(int i = 0; i < levelSize; i++){
+                TreeNode temp = queue.poll();
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
+                sum += temp.val;
+            }
+            list.add(sum / levelSize);
+        }
+        return list;
+    }
+}
+```
+
 ## 📝 今日心得
