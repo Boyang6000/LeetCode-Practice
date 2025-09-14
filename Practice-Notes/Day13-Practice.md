@@ -284,7 +284,7 @@ class Solution {
 
 ## 102. 二叉树的层序遍历
 - 题目链接：[**LeetCode 102. Binary Tree Level Order Traversal**](https://leetcode.com/problems/binary-tree-level-order-traversal/)
-- 关键词：**Binary Tree, Recursion**
+- 关键词：**Binary Tree, Queue, DFS**
 
 <br>
 
@@ -321,6 +321,50 @@ class Solution {
                 if(tempNode.left != null) queue.offer(tempNode.left);
                 if(tempNode.right != null) queue.offer(tempNode.right);
 
+                len--;
+            }
+            resList.add(item);
+        }
+    }
+}
+```
+
+## 107. 二叉树的层序遍历 II
+- 题目链接：[**LeetCode 107. Binary Tree Level Order Traversal II**](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)
+- 关键词：**Binary Tree, Queue, DFS**
+
+<br>
+
+## 💡 思路
+这道题的思路跟102一样，用queue实现DFS，只要在最后把list反转就可以了。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    List<List<Integer>> resList = new ArrayList<List<Integer>>();
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        DFS(root);
+        Collections.reverse(resList);
+        return resList;
+    }
+
+    public void DFS(TreeNode node){
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(node == null) return;
+        queue.offer(node);
+
+        while(!queue.isEmpty()){
+            List<Integer> item = new ArrayList<>();
+            int len = queue.size();
+            while(len > 0){
+                TreeNode temp = queue.poll();
+                item.add(temp.val);
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
                 len--;
             }
             resList.add(item);
