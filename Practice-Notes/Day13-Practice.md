@@ -373,7 +373,7 @@ class Solution {
 }
 ```
 
-## 199.二叉树的右视图：
+## 199.二叉树的右视图
 - 题目链接：[**LeetCode 199. Binary Tree Right Side View**](https://leetcode.com/problems/binary-tree-right-side-view/)
 - 关键词：**Binary Tree, Queue, BFS**
 
@@ -408,7 +408,7 @@ class Solution {
 }
 ```
 
-## 637.二叉树的层平均值：
+## 637.二叉树的层平均值
 - 题目链接：[**LeetCode 637. Average of Levels in Binary Tree**](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
 - 关键词：**Binary Tree, Queue, BFS**
 
@@ -445,7 +445,7 @@ class Solution {
 }
 ```
 
-## 429. N叉树的层序遍历：
+## 429. N叉树的层序遍历
 - 题目链接：[**LeetCode 429. N-ary Tree Level Order Traversal**](https://leetcode.com/problems/n-ary-tree-level-order-traversal/)
 - 关键词：**Tree, Queue, BFS**
 
@@ -483,6 +483,43 @@ class Solution {
             resList.add(item);
         }
         return resList;
+    }
+}
+```
+
+## 515.在每个树行中找最大值
+- 题目链接：[**LeetCode 515. Find Largest Value in Each Tree Row**](https://leetcode.com/problems/find-largest-value-in-each-tree-row/)
+- 关键词：**Binary Tree, Queue, BFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，用Queue做BFS，在每一层的node里面找最大值。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root == null) return list;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int max = Integer.MIN_VALUE;
+            int levelSize = queue.size();
+            for(int i = 0; i < levelSize; i++){
+                TreeNode temp = queue.poll();
+                if(temp.val > max) max = temp.val;
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
+            }
+            list.add(max);
+        }
+        return list;
     }
 }
 ```
