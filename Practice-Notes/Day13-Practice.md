@@ -284,12 +284,12 @@ class Solution {
 
 ## 102. 二叉树的层序遍历
 - 题目链接：[**LeetCode 102. Binary Tree Level Order Traversal**](https://leetcode.com/problems/binary-tree-level-order-traversal/)
-- 关键词：**Binary Tree, Queue, DFS**
+- 关键词：**Binary Tree, Queue, BFS**
 
 <br>
 
 ## 💡 思路
-这道题和解法就是整个层序遍历的模板，使用queue来进行层序遍历，也就是广度优先遍历DFS。
+这道题和解法就是整个层序遍历的模板，使用queue来进行层序遍历，也就是广度优先遍历BFS。
 
 先创建一个Queue，然后将root加入进去，通过queue的size来确定每一层里面有几个node，将这几个node处理完之后把他们的children都加入到这个queue里面直至处理完。
 
@@ -302,11 +302,11 @@ class Solution {
 class Solution {
     List<List<Integer>> resList = new ArrayList<List<Integer>>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        DFS(root);
+        BFS(root);
         return resList;
     }
 
-    public void DFS(TreeNode node){
+    public void BFS(TreeNode node){
         Queue<TreeNode> queue = new LinkedList<>();
         if(node == null) return;
         queue.offer(node);
@@ -331,12 +331,12 @@ class Solution {
 
 ## 107. 二叉树的层序遍历 II
 - 题目链接：[**LeetCode 107. Binary Tree Level Order Traversal II**](https://leetcode.com/problems/binary-tree-level-order-traversal-ii/)
-- 关键词：**Binary Tree, Queue, DFS**
+- 关键词：**Binary Tree, Queue, BFS**
 
 <br>
 
 ## 💡 思路
-这道题的思路跟102一样，用queue实现DFS，只要在最后把list反转就可以了。
+这道题的思路跟102一样，用queue实现BFS，只要在最后把list反转就可以了。
 
 <br>
 
@@ -375,12 +375,12 @@ class Solution {
 
 ## 199.二叉树的右视图：
 - 题目链接：[**LeetCode 199. Binary Tree Right Side View**](https://leetcode.com/problems/binary-tree-right-side-view/)
-- 关键词：**Binary Tree, Queue, DFS**
+- 关键词：**Binary Tree, Queue, BFS**
 
 <br>
 
 ## 💡 思路
-这道题的思路也是从102上做延伸，用Queue做DFS，先得出每一层的size，然后再用for loop到最后一个node，把最后一个node加入到list里面。
+这道题的思路也是从102上做延伸，用Queue做BFS，先得出每一层的size，然后再用for loop到最后一个node，把最后一个node加入到list里面。
 
 <br>
 
@@ -410,12 +410,12 @@ class Solution {
 
 ## 637.二叉树的层平均值：
 - 题目链接：[**LeetCode 637. Average of Levels in Binary Tree**](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
-- 关键词：**Binary Tree, Queue, DFS**
+- 关键词：**Binary Tree, Queue, BFS**
 
 <br>
 
 ## 💡 思路
-这道题的思路也是从102上做延伸，用Queue做DFS，先得出每一层的size，然后把一层里node的value加在一起做average。
+这道题的思路也是从102上做延伸，用Queue做BFS，先得出每一层的size，然后把一层里node的value加在一起做average。
 
 <br>
 
@@ -441,6 +441,48 @@ class Solution {
             list.add(sum / levelSize);
         }
         return list;
+    }
+}
+```
+
+## 429. N叉树的层序遍历：
+- 题目链接：[**LeetCode 429. N-ary Tree Level Order Traversal**](https://leetcode.com/problems/n-ary-tree-level-order-traversal/)
+- 关键词：**Tree, Queue, BFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，用Queue做BFS，先得出每一层的size，然后把每一个node所有的children都加入到queue里面去。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(Node root) {
+        List<List<Integer>> resList = new ArrayList<>();
+        Queue<Node> queue = new LinkedList<>();
+        if(root == null) return resList;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelSize = queue.size();
+            List<Integer> item = new ArrayList<>();
+            for(int i = 0; i < levelSize; i++){
+                Node temp = queue.poll();
+                item.add(temp.val);
+                List<Node> children = temp.children;
+                if (children == null || children.size() == 0) {
+                    continue;
+                }
+                for(Node child: temp.children){
+                    if(child != null) queue.offer(child);
+                }
+            }
+            resList.add(item);
+        }
+        return resList;
     }
 }
 ```
