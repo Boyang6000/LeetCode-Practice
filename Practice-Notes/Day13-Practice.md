@@ -373,4 +373,39 @@ class Solution {
 }
 ```
 
+## 199.二叉树的右视图：
+- 题目链接：[**LeetCode 199. Binary Tree Right Side View**](https://leetcode.com/problems/binary-tree-right-side-view/)
+- 关键词：**Binary Tree, Queue, DFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，用Queue做DFS，先得出每一层的size，然后再用for loop到最后一个node，把最后一个node加入到list里面。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> list = new ArrayList<>();
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root == null) return list;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelSize = queue.size();
+            for(int i = 0; i < levelSize; i++){
+                TreeNode temp = queue.poll();
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
+                if(i == levelSize - 1) list.add(temp.val);
+            }
+        }
+        return list;
+    }
+}
+```
+
 ## 📝 今日心得
