@@ -289,9 +289,9 @@ class Solution {
 <br>
 
 ## 💡 思路
-这道题是采用了recursion的办法来实现BFS遍历整个tree。
+这道题和解法就是整个层序遍历的模板，使用queue来进行层序遍历，也就是广度优先遍历DFS。
 
-先创建一个通用的resList，然后创建一个BFS method。如果当前node是null，就直接return，不是的话层数加1。如果resList的size小于层数，说明答案里面的int list不够多，就增加一个list到resList里面去。最后把node的值放到相对应的resList里的list里面，然后重复recursion。
+先创建一个Queue，然后将root加入进去，通过queue的size来确定每一层里面有几个node，将这几个node处理完之后把他们的children都加入到这个queue里面直至处理完。
 
 <br>
 
@@ -302,11 +302,11 @@ class Solution {
 class Solution {
     List<List<Integer>> resList = new ArrayList<List<Integer>>();
     public List<List<Integer>> levelOrder(TreeNode root) {
-        BFS(root);
+        DFS(root);
         return resList;
     }
 
-    public void BFS(TreeNode node){
+    public void DFS(TreeNode node){
         Queue<TreeNode> queue = new LinkedList<>();
         if(node == null) return;
         queue.offer(node);
