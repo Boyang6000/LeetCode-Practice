@@ -373,7 +373,7 @@ class Solution {
 }
 ```
 
-## 199.二叉树的右视图
+## 199. 二叉树的右视图
 - 题目链接：[**LeetCode 199. Binary Tree Right Side View**](https://leetcode.com/problems/binary-tree-right-side-view/)
 - 关键词：**Binary Tree, Queue, BFS**
 
@@ -407,8 +407,7 @@ class Solution {
     }
 }
 ```
-
-## 637.二叉树的层平均值
+## 429. 二叉树的层平均值
 - 题目链接：[**LeetCode 637. Average of Levels in Binary Tree**](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
 - 关键词：**Binary Tree, Queue, BFS**
 
@@ -487,7 +486,7 @@ class Solution {
 }
 ```
 
-## 515.在每个树行中找最大值
+## 515. 在每个树行中找最大值
 - 题目链接：[**LeetCode 515. Find Largest Value in Each Tree Row**](https://leetcode.com/problems/find-largest-value-in-each-tree-row/)
 - 关键词：**Binary Tree, Queue, BFS**
 
@@ -520,6 +519,44 @@ class Solution {
             list.add(max);
         }
         return list;
+    }
+}
+```
+
+## 116. 填充每个节点的下一个右侧节点指针
+- 题目链接：[**LeetCode 116. Populating Next Right Pointers in Each Node**](https://leetcode.com/problems/populating-next-right-pointers-in-each-node/)
+- 关键词：**Binary Tree, Queue, BFS, Two Pointers**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，用Queue做BFS，然后用双指针给同一层的每个node连接在一起。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        if(root == null) return root;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelSize = queue.size();
+            Node cur = queue.poll();
+            if(cur.left != null) queue.offer(cur.left);
+            if(cur.right != null) queue.offer(cur.right);
+            for(int i = 1; i < levelSize; i++){
+                Node next = queue.poll();
+                if(next.left != null) queue.offer(next.left);
+                if(next.right != null) queue.offer(next.right);
+                cur.next = next;
+                cur = next;
+            }
+        }
+        return root;
     }
 }
 ```
