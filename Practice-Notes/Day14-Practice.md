@@ -75,48 +75,52 @@ class Solution {
 
 <br>
 
-## 347.前 K 个高频元素
-- 题目链接：[**LeetCode 347. Top K Frequent Elements**](https://leetcode.com/problems/top-k-frequent-elements/)
-- 关键词：**PriorityQueue**
+## 104. 二叉树的最大深度
+- 题目链接：[**LeetCode 104. Maximum Depth of Binary Tree**](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+- 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题比较的有难度，第一次做可能做不出来。这道题需要同时考虑出现频率最高的元素和出现的频率，所以这里采用的是Min-Heap的方式，通过PriorityQueue来实现。
-
-先用一个Map来统计所有的元素以及他的出现频率，然后用PriorityQueue的方式，将元素和频率看作一个int数组，进行排序，当pq的size小于k，加入map里的元素，当size超过k时，如果新的元素频率大于pq里最小的频率，则update。最后将pq里的数字导出到一个int数组里。
+这道题采用了recursion的办法，变得简单灵巧。采用了后序遍历的方法，从叶子末尾开始算高度，直至根部。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for(int num: nums){
-            map.put(num, map.getOrDefault(num, 0) + 1);
-        }
+    public int maxDepth(TreeNode root) {
+        if(root == null) return 0;
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+        return Math.max(leftDepth, rightDepth) + 1;
+    }
+}
+```
 
-        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
-        for(Map.Entry<Integer, Integer> entry: map.entrySet()){
-            if(pq.size() < k){
-                pq.add(new int[]{entry.getKey(), entry.getValue()});
-            }
-            else{
-                if(entry.getValue() > pq.peek()[1]){
-                    pq.poll();
-                    pq.add(new int[]{entry.getKey(), entry.getValue()});
-                }
-            }
-        }
+<br>
 
-        int[] res = new int[k];
+## 111. 二叉树的最小深度
+- 题目链接：[**LeetCode 111. Minimum Depth of Binary Tree**](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+- 关键词：**Recursion**
 
-        for(int i = k-1; i >= 0; i--){
-            res[i] = pq.poll()[0];
-        }
+<br>
 
-        return res;
+## 💡 思路
+这道题采用了recursion的办法，变得简单灵巧。看似跟最大深度一样，其实这里面有坑。要的是叶子到根的最短距离，叶子必须是左右两边都为null。所以如果一边有child另一边没有的话，就要return有node这一边的深度。
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        if(root == null) return 0;
+        int leftDepth = minDepth(root.left);
+        int rightDepth = minDepth(root.right);
+        if(root.left != null && root.right == null) return leftDepth + 1;
+        if(root.right != null && root.left == null) return rightDepth + 1;
+        return Math.min(leftDepth, rightDepth) + 1;
     }
 }
 ```
@@ -124,4 +128,11 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目还是相对比较有难度的，第一次做的时候不容易想出来。今天做题时发现还是对stack和queue的一些功能不是很熟悉，比如push是stack用来加元素的，而queue会用add/offer，deque和queue一样，然后priorityqueue是用add。今天还涉及到了priorityqueue来实现Min-Heap，也算是复习和重新捡起印象，多练就会熟练了。
+今天的所有题目都是采用了recursion的方法。在这几道题里面，其实用recursion或者层序遍历的方式都可以实现，这两种方法都得熟练掌握。
+
+今天也重点学习了写recursion的步骤：
+ - 确定递归函数的参数和返回值
+ - 确定终止条件
+ - 确定单层递归的逻辑确定单层递归的逻辑
+
+虽然说recursion看起来不太好理解，但也还是能够掌握的，还需多加练习。
