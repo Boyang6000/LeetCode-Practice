@@ -35,20 +35,14 @@ class Solution {
 
 <br>
 
-## 101. 对称二叉树
-- 题目链接：[**LeetCode 101. Symmetric Tree**](https://leetcode.com/problems/symmetric-tree/)
+## 257. 二叉树的所有路径
+- 题目链接：[**LeetCode 257. Binary Tree Paths**](https://leetcode.com/problems/binary-tree-paths/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。主要分析有以下几种情况：
- - 左为空，右不为空 -> false
- - 左不为空，右为空 -> false
- - 左为空，右为空 -> true
- - 左不为空，右不为空，但左右值不同 -> false
-
-这样就可以继续这个recursion，看两边外侧是否相同，内侧是否相同，将最终的结果return回去。
+这道题也是采用了recursion的方法。主要用到StringBuilder来进行node的添加。如果node的左右child都是null，那就是到了叶子，就只要把node.val加进去就行。其他情况则加入node.val和->。
 
 
 <br>
@@ -56,20 +50,21 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean isSymmetric(TreeNode root) {
-        return compare(root.left, root.right);
+    List<String> result = new ArrayList<>();
+    public List<String> binaryTreePaths(TreeNode root) {
+        makePath(root, "");
+        return result;
     }
 
-    private boolean compare(TreeNode left, TreeNode right){
-        if(left != null && right == null) return false;
-        else if(left == null && right != null) return false;
-        else if(left == null && right == null) return true;
-        else if(left.val != right.val) return false;
-        else{
-            boolean outside = compare(left.left, right.right);
-            boolean inside = compare(left.right, right.left);
-            return outside && inside;
+    public void makePath(TreeNode node, String s){
+        if(node == null) return;
+        if(node.left == null && node.right == null){
+            result.add(new StringBuilder(s).append(node.val).toString());
+            return;
         }
+        String temp = new StringBuilder(s).append(node.val).append("->").toString();
+        makePath(node.left, temp);
+        makePath(node.right, temp);
     }
 }
 ```
