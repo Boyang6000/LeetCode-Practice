@@ -71,25 +71,28 @@ class Solution {
 
 <br>
 
-## 104. 二叉树的最大深度
-- 题目链接：[**LeetCode 104. Maximum Depth of Binary Tree**](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+## 404. 左叶子之和
+- 题目链接：[**LeetCode 404. Sum of Left Leaves**](https://leetcode.com/problems/sum-of-left-leaves/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题采用了recursion的办法，变得简单灵巧。采用了后序遍历的方法，从叶子末尾开始算高度，直至根部。
+这道题采用了recursion的办法，变得简单灵巧。重点在于怎么判断他是左叶子，当这个father node有一个left child，然后这个child的左右两边都是null，则这个就是个左叶子。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int maxDepth(TreeNode root) {
+    public int sumOfLeftLeaves(TreeNode root) {
         if(root == null) return 0;
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return Math.max(leftDepth, rightDepth) + 1;
+        if(root.left == null && root.right == null) return 0;
+        int left = sumOfLeftLeaves(root.left);
+        if(root.left != null && root.left.left == null && root.left.right == null) left = root.left.val;
+        int right = sumOfLeftLeaves(root.right);
+        int sum = left + right;
+        return sum;
     }
 }
 ```
