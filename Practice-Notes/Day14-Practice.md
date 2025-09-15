@@ -99,27 +99,25 @@ class Solution {
 
 <br>
 
-## 111. 二叉树的最小深度
-- 题目链接：[**LeetCode 111. Minimum Depth of Binary Tree**](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+## 222. 完全二叉树的节点个数
+- 题目链接：[**LeetCode 222. Count Complete Tree Nodes**](https://leetcode.com/problems/count-complete-tree-nodes/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题采用了recursion的办法，变得简单灵巧。看似跟最大深度一样，其实这里面有坑。要的是叶子到根的最短距离，叶子必须是左右两边都为null。所以如果一边有child另一边没有的话，就要return有node这一边的深度。
+这道题采用了recursion的办法，变得简单灵巧。这个是通用算完全二叉树/满二叉树的解法。只需要采用recursion把node数量相加return就行。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int minDepth(TreeNode root) {
-        if(root == null) return 0;
-        int leftDepth = minDepth(root.left);
-        int rightDepth = minDepth(root.right);
-        if(root.left != null && root.right == null) return leftDepth + 1;
-        if(root.right != null && root.left == null) return rightDepth + 1;
-        return Math.min(leftDepth, rightDepth) + 1;
+    public int countNodes(TreeNode root) {
+        if(root == null) {
+            return 0;
+        }
+        return countNodes(root.left) + countNodes(root.right) + 1;
     }
 }
 ```
@@ -127,11 +125,8 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的所有题目都是采用了recursion的方法。在这几道题里面，其实用recursion或者层序遍历的方式都可以实现，这两种方法都得熟练掌握。
+今天的题目重点采用了recursion的方法去写，慢慢能抓到recursion是怎么写的了。**重点就还是在以下三点：**
 
-今天也重点学习了写recursion的步骤：
- - 确定递归函数的参数和返回值
- - 确定终止条件
- - 确定单层递归的逻辑确定单层递归的逻辑
-
-虽然说recursion看起来不太好理解，但也还是能够掌握的，还需多加练习。
+- **确定递归函数的参数和返回值**
+- **确定终止条件**
+- **确定单层递归的逻辑**
