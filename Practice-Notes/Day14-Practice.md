@@ -2,32 +2,33 @@
 
 <br>
 
-## 226. 翻转二叉树
-- 题目链接：[**LeetCode 226. Invert Binary Tree**](https://leetcode.com/problems/invert-binary-tree/)
+## 110. 平衡二叉树
+- 题目链接：[**LeetCode 110. Balanced Binary Tree**](https://leetcode.com/problems/balanced-binary-tree/)
 - 关键词：**Recursion**  
 
 <br>
 
 ## 💡 思路
-这道题比较的简单，但是也需要理解明白其中的意思。最直接的就是用recursion的办法。以下的方法是采用了前序遍历的方法（中左右），先swap中间的node，再进行到他们的children。
+这道题是通过recursion的方式。先写recursion method，如果左右高度差大于1，就return -1，不是的话就return当前高度，最后看这个recursion是不是return -1。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if(root == null) return root;
-        swap(root);
-        invertTree(root.left);
-        invertTree(root.right);
-        return root;
+    public boolean isBalanced(TreeNode root) {
+        return getHeight(root) != -1;
     }
 
-    public void swap(TreeNode root){
-        TreeNode temp = root.left;
-        root.left = root.right;
-        root.right = temp;
+    public int getHeight(TreeNode root){
+        if(root == null) return 0;
+        int leftHeight = getHeight(root.left);
+        if(leftHeight == -1) return -1;
+        int rightHeight = getHeight(root.right);
+        if(rightHeight == -1) return -1;
+
+        if(Math.abs(leftHeight - rightHeight) > 1) return -1;
+        return Math.max(leftHeight, rightHeight) + 1;
     }
 }
 ```
