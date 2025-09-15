@@ -407,7 +407,7 @@ class Solution {
     }
 }
 ```
-## 429. 二叉树的层平均值
+## 637. 二叉树的层平均值
 - 题目链接：[**LeetCode 637. Average of Levels in Binary Tree**](https://leetcode.com/problems/average-of-levels-in-binary-tree/)
 - 关键词：**Binary Tree, Queue, BFS**
 
