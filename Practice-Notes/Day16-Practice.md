@@ -37,14 +37,14 @@ class Solution {
 
 <br>
 
-## 257. 二叉树的所有路径
-- 题目链接：[**LeetCode 257. Binary Tree Paths**](https://leetcode.com/problems/binary-tree-paths/)
+## 112. 路径总和
+- 题目链接：[**LeetCode 112. Path Sum**](https://leetcode.com/problems/path-sum/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。主要用到StringBuilder来进行node的添加。如果node的左右child都是null，那就是到了叶子，就只要把node.val加进去就行。其他情况则加入node.val和->。
+这道题也是采用了recursion的方法。不要去计算这一条path上的sum，而是去做减法。当targetSum等于0且当前node是叶子时return true。
 
 
 <br>
@@ -52,21 +52,15 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    List<String> result = new ArrayList<>();
-    public List<String> binaryTreePaths(TreeNode root) {
-        makePath(root, "");
-        return result;
-    }
-
-    public void makePath(TreeNode node, String s){
-        if(node == null) return;
-        if(node.left == null && node.right == null){
-            result.add(new StringBuilder(s).append(node.val).toString());
-            return;
-        }
-        String temp = new StringBuilder(s).append(node.val).append("->").toString();
-        makePath(node.left, temp);
-        makePath(node.right, temp);
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root == null) return false;
+        targetSum -= root.val;
+        if(root.left == null && root.right == null) return targetSum == 0;
+        boolean left = hasPathSum(root.left, targetSum);
+        if(left) return true;
+        boolean right = hasPathSum(root.right, targetSum);
+        if(right) return true;
+        return false;
     }
 }
 ```
