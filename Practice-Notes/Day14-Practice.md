@@ -34,44 +34,41 @@ class Solution {
 
 <br>
 
-## 239. 滑动窗口最大值
-- 题目链接：[**LeetCode 239. Sliding Window Maximum**](https://leetcode.com/problems/sliding-window-maximum/)
-- 关键词：**Deque, ArrayDeque**
+## 101. 对称二叉树
+- 题目链接：[**LeetCode 101. Symmetric Tree**](https://leetcode.com/problems/symmetric-tree/)
+- 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题比较的有难度。需要用到单调队列的思想。建立一个deque单调队列，从大到小来放index，当deque里第一个index不在sliding window的范围时poll出来。当deque的末尾数字小于将要加进去的数字时，将末尾数字poll出来，因为他永远不可能成为sliding window里最大的数字。将这个index加入到deque里面。当循环进入sliding window时，每一次移动窗口都把最大的数字，也就是deque的最前端，加入到答案里面去。
+这道题也是采用了recursion的方法。主要分析有以下几种情况：
+ - 左为空，右不为空 -> false
+ - 左不为空，右为空 -> false
+ - 左为空，右为空 -> true
+ - 左不为空，右不为空，但左右值不同 -> false
+
+这样就可以继续这个recursion，看两边外侧是否相同，内侧是否相同，将最终的结果return回去。
+
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[] maxSlidingWindow(int[] nums, int k) {
-        int length = nums.length;
-        int[] ans = new int[length - k + 1];
-        int count = 0;
-        Deque<Integer> deque = new ArrayDeque<>();
+    public boolean isSymmetric(TreeNode root) {
+        return compare(root.left, root.right);
+    }
 
-        for(int i = 0; i < nums.length; i++){
-            while(!deque.isEmpty() && deque.peek() < i - k + 1){
-                deque.poll();
-            }
-
-            while(!deque.isEmpty() && nums[deque.peekLast()] < nums[i]){
-                deque.pollLast();
-            }
-
-            deque.offer(i);
-
-            if(i >= k - 1){
-                ans[count] = nums[deque.peek()];
-                count++;
-            }
+    private boolean compare(TreeNode left, TreeNode right){
+        if(left != null && right == null) return false;
+        else if(left == null && right != null) return false;
+        else if(left == null && right == null) return true;
+        else if(left.val != right.val) return false;
+        else{
+            boolean outside = compare(left.left, right.right);
+            boolean inside = compare(left.right, right.left);
+            return outside && inside;
         }
-
-        return ans;
     }
 }
 ```
