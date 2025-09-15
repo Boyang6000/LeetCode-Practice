@@ -561,4 +561,113 @@ class Solution {
 }
 ```
 
+## 117. 填充每个节点的下一个右侧节点指针II
+- 题目链接：[**LeetCode 117. Populating Next Right Pointers in Each Node II**](https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/)
+- 关键词：**Binary Tree, Queue, BFS, Two Pointers**
+
+<br>
+
+## 💡 思路
+同116。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        Queue<Node> queue = new LinkedList<>();
+        if(root == null) return root;
+        queue.offer(root);
+        while(!queue.isEmpty()){
+            int levelSize = queue.size();
+            Node cur = queue.poll();
+            if(cur.left != null) queue.offer(cur.left);
+            if(cur.right != null) queue.offer(cur.right);
+            for(int i = 1; i < levelSize; i++){
+                Node next = queue.poll();
+                if(next.left != null) queue.offer(next.left);
+                if(next.right != null) queue.offer(next.right);
+                cur.next = next;
+                cur = next;
+            }
+        }
+        return root;
+    }
+}
+```
+
+## 104. 二叉树的最大深度
+- 题目链接：[**LeetCode 104. Maximum Depth of Binary Tree**](https://leetcode.com/problems/maximum-depth-of-binary-tree/)
+- 关键词：**Binary Tree, Queue, BFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，从层序遍历上进行计算最大深度。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public int maxDepth(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root != null) queue.offer(root);
+        int depth = 0;
+        while(!queue.isEmpty()){
+            int len = queue.size();
+            while(len > 0){
+                 TreeNode temp = queue.poll();
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
+                len--;
+            }
+            depth++;
+        }
+        return depth;
+    }
+}
+```
+
+## 111. 二叉树的最小深度
+- 题目链接：[**LeetCode 111. Minimum Depth of Binary Tree**](https://leetcode.com/problems/minimum-depth-of-binary-tree/)
+- 关键词：**Binary Tree, Queue, BFS**
+
+<br>
+
+## 💡 思路
+这道题的思路也是从102上做延伸，从层序遍历上进行计算最小深度，当node没有左右child的时候，这一层就是最小深度。
+
+<br>
+
+## 💻 代码实现
+
+
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        Queue<TreeNode> queue = new LinkedList<>();
+        if(root != null) queue.offer(root);
+        int depth = 0;
+        while(!queue.isEmpty()){
+            depth++;
+            int len = queue.size();
+            while(len > 0){
+                 TreeNode temp = queue.poll();
+                if(temp.left != null) queue.offer(temp.left);
+                if(temp.right != null) queue.offer(temp.right);
+                if(temp.left == null && temp.right == null) return depth;
+                len--;
+            }
+        }
+        return depth;
+    }
+}
+```
+
 ## 📝 今日心得
