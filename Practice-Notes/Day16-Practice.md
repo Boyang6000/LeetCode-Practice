@@ -67,28 +67,49 @@ class Solution {
 
 <br>
 
-## 404. 左叶子之和
-- 题目链接：[**LeetCode 404. Sum of Left Leaves**](https://leetcode.com/problems/sum-of-left-leaves/)
+## 113. 路径总和 II
+- 题目链接：[**LeetCode 113. Path Sum II**](https://leetcode.com/problems/path-sum-ii/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题采用了recursion的办法，变得简单灵巧。重点在于怎么判断他是左叶子，当这个father node有一个left child，然后这个child的左右两边都是null，则这个就是个左叶子。
+这道题跟112的思路有一些不同，因为需要记录所有等于targetSum的path。
+
+也是采用recursion的方法，创建一个result来记录所有符合要求的path，创建一个path来记录可能的路径。当左右child都是null和targetSum变成0时，把这个path加入到result里面。不满足时则回退一个node继续寻找。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int sumOfLeftLeaves(TreeNode root) {
-        if(root == null) return 0;
-        if(root.left == null && root.right == null) return 0;
-        int left = sumOfLeftLeaves(root.left);
-        if(root.left != null && root.left.left == null && root.left.right == null) left = root.left.val;
-        int right = sumOfLeftLeaves(root.right);
-        int sum = left + right;
-        return sum;
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> result = new ArrayList<>();
+        if(root == null) return result;
+        List<Integer> path = new LinkedList<>();
+        preorderDFS(root, targetSum, result, path);
+        return result;
+    }
+
+    public void preorderDFS(TreeNode node, int targetSum, List<List<Integer>> result, List<Integer> path){
+        if (node == null) return;
+        path.add(node.val);
+        int remain = targetSum - node.val;
+        if(node.left == null && node.right == null){
+            if(remain == 0){
+                result.add(new ArrayList<>(path));
+            }
+            return;
+        }
+        
+        if(node.left != null){
+            preorderDFS(node.left, remain, result, path);
+            path.remove(path.size() - 1);
+        }
+        if(node.right != null){
+            preorderDFS(node.right, remain, result, path);
+            path.remove(path.size() - 1);
+        }
     }
 }
 ```
