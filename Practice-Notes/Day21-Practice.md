@@ -30,14 +30,14 @@ class Solution {
 
 <br>
 
-## 701. 二叉搜索树中的插入操作
-- 题目链接：[**LeetCode 701. Insert into a Binary Search Tree**](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
+## 108. 将有序数组转换为二叉搜索树  
+- 题目链接：[**LeetCode 108. Convert Sorted Array to Binary Search Tree**](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。当当前root值大于val，就在左边寻找；当当前root值小于val，就在右边寻找。
+这道题也是采用了recursion的方法。找到中间root的index，将这个array分成两部分，然后重复操作找root.left和root.right。
 
 
 <br>
@@ -45,13 +45,17 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode insertIntoBST(TreeNode root, int val) {
-        if(root == null){
-            root = new TreeNode(val);
-            return root;
-        }
-        if(root.val > val) root.left = insertIntoBST(root.left, val);
-        if(root.val < val) root.right = insertIntoBST(root.right, val);
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return sortedArrayToBST(nums, 0, nums.length);
+    }
+
+    public TreeNode sortedArrayToBST(int[] nums, int left, int right){
+        if(left >= right) return null;
+        if(right - left == 1) return new TreeNode(nums[left]);
+        int middle = left + (right - left) / 2;
+        TreeNode root = new TreeNode(nums[middle]);
+        root.left = sortedArrayToBST(nums, left, middle);
+        root.right = sortedArrayToBST(nums, middle + 1, right);
         return root;
     }
 }
