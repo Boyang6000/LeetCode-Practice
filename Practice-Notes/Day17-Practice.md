@@ -97,97 +97,32 @@ class Solution {
 
 <br>
 
-## 106. 从中序与后序遍历序列构造二叉树
-- 题目链接：[**LeetCode 106. Construct Binary Tree from Inorder and Postorder Traversal**](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+## 98. 验证二叉搜索树
+- 题目链接：[**LeetCode 98. Validate Binary Search Tree**](https://leetcode.com/problems/validate-binary-search-tree/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题采用了recursion的办法，变得简单灵巧。重点在于怎么找root node，已知后序遍历的顺序是左右中，这样的话最后一个就是root。又知道中序遍历是左中右，那么通过寻找到root可以把中序分成左中序和右中序两个部分。根据这两个部分的长度，可以找出后序遍历中左后序和右后序的部分，接着进行recursion。
+这道题采用的是recursion，用的是中序遍历的方式（左中右），先找到最左边的node，然后再一个个向上比较看当前node是否大于前驱node，大于的话update前驱node为当前node。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode buildTree(int[] inorder, int[] postorder) {
-        if(inorder.length == 0 || postorder.length == 0) return null;
-        return buildHelper(inorder, 0, inorder.length, postorder, 0, postorder.length);
-    }
-    
-    private TreeNode buildHelper(int[] inorder, int inorderStart, int inorderEnd, int[] postorder, int postorderStart, int postorderEnd){
-        if(postorderStart == postorderEnd) return null;
-        int rootVal = postorder[postorderEnd - 1];
-        TreeNode root = new TreeNode(rootVal);
-        int middleIndex;
-        for(middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
-            if(inorder[middleIndex] == rootVal) break;
-        }
+    TreeNode max;
+    public boolean isValidBST(TreeNode root) {
+        if(root == null) return true;
 
-        int leftInOrderStart = inorderStart;
-        int leftInOrderEnd = middleIndex;
-        int rightInOrderStart = middleIndex + 1;
-        int rightInOrderEnd = inorderEnd;
+        boolean left = isValidBST(root.left);
+        if(!left) return false;
 
-        int leftPostOrderStart = postorderStart;
-        int leftPostOrderEnd = postorderStart + (middleIndex - inorderStart);
-        int rightPostOrderStart = leftPostOrderEnd;
-        int rightPostOrderEnd = postorderEnd - 1;
-        
-        root.left = buildHelper(inorder, leftInOrderStart, leftInOrderEnd, postorder, leftPostOrderStart, leftPostOrderEnd);
-        root.right = buildHelper(inorder, rightInOrderStart, rightInOrderEnd, postorder, rightPostOrderStart, rightPostOrderEnd);
+        if(max != null && root.val <= max.val) return false;
+        max = root;
 
-        return root;
-    }
-}
-```
-
-<br>
-
-## 105. 从前序与中序遍历序列构造二叉树
-- 题目链接：[**LeetCode 105. Construct Binary Tree from PreOrder and Inorder Traversal**](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
-- 关键词：**Recursion**
-
-<br>
-
-## 💡 思路
-这道题的思路与106相同。
-
-<br>
-
-## 💻 代码实现
-```java
-class Solution {
-    public TreeNode buildTree(int[] preorder, int[] inorder) {
-        if(preorder == null || inorder == null) return null;
-        return buildHelper(preorder, 0, preorder.length, inorder, 0, inorder.length);
-    }
-
-    private TreeNode buildHelper(int[] preorder, int preorderStart, int preorderEnd, int[] inorder, int inorderStart, int inorderEnd){
-        if(preorderStart == preorderEnd) return null;
-        int rootVal = preorder[preorderStart];
-        TreeNode root = new TreeNode(rootVal);
-        int middleIndex;
-
-        for(middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
-            if(inorder[middleIndex] == rootVal) break;
-        }
-
-        int leftInOrderStart = inorderStart;
-        int leftInOrderEnd = middleIndex;
-        int rightInOrderStart = middleIndex + 1;
-        int rightInOrderEnd = inorderEnd;
-        
-        int leftPreOrderStart = preorderStart + 1;
-        int leftPreOrderEnd = preorderStart + 1 + (middleIndex - inorderStart);
-        int rightPreOrderStart = leftPreOrderEnd;
-        int rightPreOrderEnd = preorderEnd;
-
-        root.left = buildHelper(preorder, leftPreOrderStart, leftPreOrderEnd, inorder, leftInOrderStart, leftInOrderEnd);
-        root.right = buildHelper(preorder, rightPreOrderStart, rightPreOrderEnd, inorder, rightInOrderStart, rightInOrderEnd);
-
-        return root;
+        boolean right = isValidBST(root.right);
+        return right; 
     }
 }
 ```
@@ -195,7 +130,7 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目重点采用了recursion的方法去写，可以发现用recursion的话在大部分二叉树的题目上都很省力。**重点就还是在以下三点：**
+今天的题目重点采用了recursion的方法去写，可以发现用recursion的话在大部分二叉树的题目上都很省力，今天的题目相对比较的简单，需要注意的是要判断recursion method的return，判断是void，return一个值，还是return boolean，就会有不同的写法。**重点就还是在以下三点：**
 
 - **确定递归函数的参数和返回值**
 - **确定终止条件**
