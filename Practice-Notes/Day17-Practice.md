@@ -1,36 +1,42 @@
-# 📝 LeetCode 学习日志 Day 16
+# 📝 LeetCode 学习日志 Day 17
 
 <br>
 
-## 513. 找树左下角的值
-- 题目链接：[**LeetCode 513. Find Bottom Left Tree Value**](https://leetcode.com/problems/find-bottom-left-tree-value/)
+## 654. 最大二叉树
+- 题目链接：[**LeetCode 654. Maximum Binary Tree**](https://leetcode.com/problems/maximum-binary-tree/)
 - 关键词：**Recursion**  
 
 <br>
 
 ## 💡 思路
-这道题用层序遍历会比recursion方便很多，只要每次update第一个node的值就行了，因为第一个node永远都是左node。
+这道题用的是recursion。重复的去找最大值，然后在最大值的左右两边重复这个过程。注意要判断interval里面是否存在有效node。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int findBottomLeftValue(TreeNode root) {
-        Queue<TreeNode> queue = new LinkedList<>();
-        if(root == null) return 0;
-        queue.offer(root);
-        int ans = 0;
-        while(!queue.isEmpty()){
-            int size = queue.size();
-            for(int i = 0; i < size; i++){
-                TreeNode temp = queue.poll();
-                if(i == 0) ans = temp.val;
-                if(temp.left != null) queue.offer(temp.left);
-                if(temp.right != null) queue.offer(temp.right);
+    public TreeNode constructMaximumBinaryTree(int[] nums) {
+        return constructHelper(nums, 0, nums.length);
+    }
+
+    public TreeNode constructHelper(int[] nums, int leftIndex, int rightIndex){
+        if(rightIndex - leftIndex < 1) return null;
+        if(rightIndex - leftIndex == 1) return new TreeNode(nums[leftIndex]);
+
+        int maxIndex = leftIndex;
+        int maxValue = nums[leftIndex];
+        for(int i = leftIndex + 1; i < rightIndex; i++){
+            if(nums[i] > maxValue) {
+                maxValue = nums[i];
+                maxIndex = i;
             }
         }
-        return ans;
+
+        TreeNode root = new TreeNode(maxValue);
+        root.left = constructHelper(nums, leftIndex, maxIndex);
+        root.right = constructHelper(nums, maxIndex + 1, rightIndex);
+        return root;
     }
 }
 ```
