@@ -26,6 +26,8 @@
 - 2025-09-12 · Day 17：日志 → [Day 17](Practice-Notes/Day17-Practice.md)
 - 2025-09-13 · Day 18：日志 → [Day 18](Practice-Notes/Day18-Practice.md)
 - 2025-09-14 · Day 19：日志 → **周日休息日**
+- 2025-09-15 · Day 20：日志 → [Day 20](Practice-Notes/Day20-Practice.md)
+- 2025-09-16 · Day 21：日志 → [Day 21](Practice-Notes/Day21-Practice.md)
 
 <br>
 <hr>
