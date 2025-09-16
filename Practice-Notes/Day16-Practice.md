@@ -116,25 +116,50 @@ class Solution {
 
 <br>
 
-## 222. 完全二叉树的节点个数
-- 题目链接：[**LeetCode 222. Count Complete Tree Nodes**](https://leetcode.com/problems/count-complete-tree-nodes/)
+## 106. 从中序与后序遍历序列构造二叉树
+- 题目链接：[**LeetCode 106. Construct Binary Tree from Inorder and Postorder Traversal**](https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题采用了recursion的办法，变得简单灵巧。这个是通用算完全二叉树/满二叉树的解法。只需要采用recursion把node数量相加return就行。
+这道题采用了recursion的办法，变得简单灵巧。重点在于怎么找root node，已知后序遍历的顺序是左右中，这样的话最后一个就是root。又知道中序遍历是左中右，那么通过寻找到root可以把中序分成左中序和右中序两个部分。根据这两个部分的长度，可以找出后序遍历中左后序和右后序的部分，接着进行recursion。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int countNodes(TreeNode root) {
-        if(root == null) {
-            return 0;
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if(inorder.length == 0 || postorder.length == 0) return null;
+        return buildHelper(inorder, 0, inorder.length, postorder, 0, postorder.length);
+    }
+    
+    private TreeNode buildHelper(int[] inorder, int inorderStart, int inorderEnd, int[] postorder, int postorderStart, int postorderEnd){
+        if(postorderStart == postorderEnd) return null;
+        int rootVal = postorder[postorderEnd - 1];
+        TreeNode root = new TreeNode(rootVal);
+        int middleIndex;
+        for(middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
+            if(inorder[middleIndex] == rootVal){
+                break;
+            }
         }
-        return countNodes(root.left) + countNodes(root.right) + 1;
+
+        int leftInOrderStart = inorderStart;
+        int leftInOrderEnd = middleIndex;
+        int rightInOrderStart = middleIndex + 1;
+        int rightInOrderEnd = inorderEnd;
+
+        int leftPostOrderStart = postorderStart;
+        int leftPostOrderEnd = postorderStart + (middleIndex - inorderStart);
+        int rightPostOrderStart = leftPostOrderEnd;
+        int rightPostOrderEnd = postorderEnd - 1;
+        
+        root.left = buildHelper(inorder, leftInOrderStart, leftInOrderEnd, postorder, leftPostOrderStart, leftPostOrderEnd);
+        root.right = buildHelper(inorder, rightInOrderStart, rightInOrderEnd, postorder, rightPostOrderStart, rightPostOrderEnd);
+
+        return root;
     }
 }
 ```
