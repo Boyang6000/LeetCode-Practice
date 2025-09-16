@@ -164,8 +164,57 @@ class Solution {
 
 <br>
 
+## 105. 从前序与中序遍历序列构造二叉树
+- 题目链接：[**LeetCode 105. Construct Binary Tree from PreOrder and Inorder Traversal**](https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+- 关键词：**Recursion**
+
+<br>
+
+## 💡 思路
+这道题的思路与106相同。
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        if(preorder == null || inorder == null) return null;
+        return buildHelper(preorder, 0, preorder.length, inorder, 0, inorder.length);
+    }
+
+    private TreeNode buildHelper(int[] preorder, int preorderStart, int preorderEnd, int[] inorder, int inorderStart, int inorderEnd){
+        if(preorderStart == preorderEnd) return null;
+        int rootVal = preorder[preorderStart];
+        TreeNode root = new TreeNode(rootVal);
+        int middleIndex;
+
+        for(middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
+            if(inorder[middleIndex] == rootVal) break;
+        }
+
+        int leftInOrderStart = inorderStart;
+        int leftInOrderEnd = middleIndex;
+        int rightInOrderStart = middleIndex + 1;
+        int rightInOrderEnd = inorderEnd;
+        
+        int leftPreOrderStart = preorderStart + 1;
+        int leftPreOrderEnd = preorderStart + 1 + (middleIndex - inorderStart);
+        int rightPreOrderStart = leftPreOrderEnd;
+        int rightPreOrderEnd = preorderEnd;
+
+        root.left = buildHelper(preorder, leftPreOrderStart, leftPreOrderEnd, inorder, leftInOrderStart, leftInOrderEnd);
+        root.right = buildHelper(preorder, rightPreOrderStart, rightPreOrderEnd, inorder, rightInOrderStart, rightInOrderEnd);
+
+        return root;
+    }
+}
+```
+
+<br>
+
 ## 📝 今日心得
-今天的题目重点采用了recursion的方法去写，慢慢能抓到recursion是怎么写的了。**重点就还是在以下三点：**
+今天的题目重点采用了recursion的方法去写，可以发现用recursion的话在大部分二叉树的题目上都很省力。**重点就还是在以下三点：**
 
 - **确定递归函数的参数和返回值**
 - **确定终止条件**
