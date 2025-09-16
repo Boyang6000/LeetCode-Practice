@@ -2,25 +2,27 @@
 
 <br>
 
-## 235. 二叉搜索树的最近公共祖先 
-- 题目链接：[**LeetCode 235. Lowest Common Ancestor of a Binary Search Tree**](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+## 669. 修剪二叉搜索树
+- 题目链接：[**LeetCode 669. Trim a Binary Search Tree**](https://leetcode.com/problems/trim-a-binary-search-tree/)
 - 关键词：**Recursion**  
 
 <br>
 
 ## 💡 思路
-这道题跟235略微不同因为二叉搜索树的特性，当root第一次出现在pq interval之间时，他就是最近公共祖先。
-
-为什么呢？因为当root第一次出现在pq interval之间时，继续往root.left或者root.right探索，只会寻找到p或者q，不能同时找到pq，所以继续往下探寻找不到公共祖先。
+这道题比较的有困难，思路就是，如果当前节点的值小于low，就要把当前节点的右边trim了之后return右边的root。如果当前节点的值大于high的话，就要把左边trim了之后return左边的root。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root.val > p.val && root.val > q.val) return lowestCommonAncestor(root.left, p, q);
-        if(root.val < p.val && root.val < q.val) return lowestCommonAncestor(root.right, p, q);
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if(root == null) return null;
+        if(root.val < low) return trimBST(root.right, low, high);
+        if(root.val > high) return trimBST(root.left, low, high);
+
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
         return root;
     }
 }
