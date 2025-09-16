@@ -141,9 +141,7 @@ class Solution {
         TreeNode root = new TreeNode(rootVal);
         int middleIndex;
         for(middleIndex = inorderStart; middleIndex < inorderEnd; middleIndex++){
-            if(inorder[middleIndex] == rootVal){
-                break;
-            }
+            if(inorder[middleIndex] == rootVal) break;
         }
 
         int leftInOrderStart = inorderStart;
