@@ -1,42 +1,35 @@
-# 📝 LeetCode 学习日志 Day 17
+# 📝 LeetCode 学习日志 Day 18
 
 <br>
 
-## 654. 最大二叉树
-- 题目链接：[**LeetCode 654. Maximum Binary Tree**](https://leetcode.com/problems/maximum-binary-tree/)
+## 530. 二叉搜索树的最小绝对差
+- 题目链接：[**LeetCode 530. Minimum Absolute Difference in BST**](https://leetcode.com/problems/minimum-absolute-difference-in-bst/)
 - 关键词：**Recursion**  
 
 <br>
 
 ## 💡 思路
-这道题用的是recursion。重复的去找最大值，然后在最大值的左右两边重复这个过程。注意要判断interval里面是否存在有效node。
+这道题用的是recursion。跟98的思路类似，是一道很经典在二叉搜索树上用双指针的例子。先找到最左边的node设定为pre，然后拿他的root去跟他比较，比较完之后移动pre。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode constructMaximumBinaryTree(int[] nums) {
-        return constructHelper(nums, 0, nums.length);
+    TreeNode pre;
+    int min = Integer.MAX_VALUE;
+    public int getMinimumDifference(TreeNode root) {
+        if(root == null) return 0;
+        traversal(root);
+        return min;
     }
 
-    public TreeNode constructHelper(int[] nums, int leftIndex, int rightIndex){
-        if(rightIndex - leftIndex < 1) return null;
-        if(rightIndex - leftIndex == 1) return new TreeNode(nums[leftIndex]);
-
-        int maxIndex = leftIndex;
-        int maxValue = nums[leftIndex];
-        for(int i = leftIndex + 1; i < rightIndex; i++){
-            if(nums[i] > maxValue) {
-                maxValue = nums[i];
-                maxIndex = i;
-            }
-        }
-
-        TreeNode root = new TreeNode(maxValue);
-        root.left = constructHelper(nums, leftIndex, maxIndex);
-        root.right = constructHelper(nums, maxIndex + 1, rightIndex);
-        return root;
+    public void traversal(TreeNode root){
+        if(root == null) return;
+        traversal(root.left);
+        if(pre != null) min = Math.min(min, root.val - pre.val);
+        pre = root;
+        traversal(root.right);
     }
 }
 ```
