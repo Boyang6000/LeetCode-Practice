@@ -57,29 +57,49 @@ class Solution {
 
 <br>
 
-## 236. 二叉树的最近公共祖先 
-- 题目链接：[**LeetCode 236. Lowest Common Ancestor of a Binary Tree**](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
+## 450. 删除二叉搜索树中的节点 
+- 题目链接：[**LeetCode 450. Delete Node in a BST**](https://leetcode.com/problems/delete-node-in-a-bst/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题比较困难，用到的是recursion里面的回溯。首先我们是用的后序遍历（左右中），然后当找到p或者q时，return p或者q。当左右两边都是null时，说明没找到pq，return null。当有一边不为null时，return那一边的value。当两边都不是null时，说明找到了pq，那就return他们的root。
+这道题用的是recursion来删除节点，重点是考虑以下五种情况：
+
+***没找到删除的节点***
+ - **第一种情况：遍历到空节点直接返回了**
+
+***找到删除的节点***
+
+ - **第二种情况：左右孩子都为空（叶子节点），直接删除节点， 返回NULL为根节点**
+ - **第三种情况：删除节点的左孩子为空，右孩子不为空，删除节点，右孩子补位，返回右孩子为根节点**
+ - **第四种情况：删除节点的右孩子为空，左孩子不为空，删除节点，左孩子补位，返回左孩子为根节点**
+ - **第五种情况：左右孩子节点都不为空，则将删除节点的左子树头结点（左孩子）放到删除节点的右子树的最左面节点的左孩子上，返回删除节点右孩子为新的根节点。**
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root == null || root == p || root == q) return root;
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if(root == null) return root;
+        if(root.val == key){
+            if(root.left == null) return root.right;
+            else if(root.right == null) return root.left;
+            else{
+                TreeNode cur = root.right;
+                while(cur.left != null){
+                    cur = cur.left;
+                }
+                cur.left = root.left;
+                root = root.right;
+                return root;
+            }
+        }
 
-        TreeNode left = lowestCommonAncestor(root.left, p, q);
-        TreeNode right = lowestCommonAncestor(root.right, p, q);
-        if(left == null && right == null) return null;
-        else if(left != null && right == null) return left;
-        else if(left == null && right != null) return right;
-        else return root;
+        if(root.val > key) root.left = deleteNode(root.left, key);
+        if(root.val < key) root.right = deleteNode(root.right, key);
+        return root;
     }
 }
 ```
@@ -87,4 +107,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目还是比较的有难度的，涉及到了在二叉搜索树里用双指针，还有就是回溯。当需要从下往上去遍历时，就用后序遍历。
+总体而言，今天的题目难度不是很大，但是自己在写recursion的感觉就是没有什么信心，不知道是要return值还是不return，需要多多思考recursion的写法多加练习。
