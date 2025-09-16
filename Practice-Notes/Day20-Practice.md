@@ -3,7 +3,7 @@
 <br>
 
 ## 235. 二叉搜索树的最近公共祖先 
-- 题目链接：[**LeetCode 235. Minimum Absolute Difference in BST**](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+- 题目链接：[**LeetCode 235. Lowest Common Ancestor of a Binary Search Tree**](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/)
 - 关键词：**Recursion**  
 
 <br>
