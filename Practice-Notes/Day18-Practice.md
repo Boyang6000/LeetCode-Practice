@@ -98,24 +98,28 @@ class Solution {
 
 <br>
 
-## 700. 二叉搜索树中的搜索
-- 题目链接：[**LeetCode 700. Search In a Binary Search Tree**](https://leetcode.com/problems/search-in-a-binary-search-tree/)
+## 236. 二叉树的最近公共祖先 
+- 题目链接：[**LeetCode 236. Lowest Common Ancestor of a Binary Tree**](https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题比较的简单，用recursion或者迭代都可以完成。
+这道题比较困难，用到的是recursion里面的回溯。首先我们是用的后序遍历（左右中），然后当找到p或者q时，return p或者q。当左右两边都是null时，说明没找到pq，return null。当有一边不为null时，return那一边的value。当两边都不是null时，说明找到了pq，那就return他们的root。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode searchBST(TreeNode root, int val) {
-        if(root == null) return null;
-        else if(root.val > val) return searchBST(root.left, val);
-        else if(root.val < val) return searchBST(root.right, val);
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root == null || root == p || root == q) return root;
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        if(left == null && right == null) return null;
+        else if(left != null && right == null) return left;
+        else if(left == null && right != null) return right;
         else return root;
     }
 }
@@ -123,41 +127,5 @@ class Solution {
 
 <br>
 
-## 98. 验证二叉搜索树
-- 题目链接：[**LeetCode 98. Validate Binary Search Tree**](https://leetcode.com/problems/validate-binary-search-tree/)
-- 关键词：**Recursion**
-
-<br>
-
-## 💡 思路
-这道题采用的是recursion，用的是中序遍历的方式（左中右），先找到最左边的node，然后再一个个向上比较看当前node是否大于前驱node，大于的话update前驱node为当前node。
-
-<br>
-
-## 💻 代码实现
-```java
-class Solution {
-    TreeNode max;
-    public boolean isValidBST(TreeNode root) {
-        if(root == null) return true;
-
-        boolean left = isValidBST(root.left);
-        if(!left) return false;
-
-        if(max != null && root.val <= max.val) return false;
-        max = root;
-
-        boolean right = isValidBST(root.right);
-        return right; 
-    }
-}
-```
-
-<br>
-
 ## 📝 今日心得
-今天的题目重点采用了recursion的方法去写，可以发现用recursion的话在大部分二叉树的题目上都很省力，今天的题目相对比较的简单，需要注意的是要判断recursion method的return，判断是void，return一个值，还是return boolean，就会有不同的写法。**重点就还是在以下三点：**
-
- - **如果需要搜索整棵二叉树且不用处理递归返回值，递归函数就不要返回值。**
- - **如果需要搜索整棵二叉树且需要处理递归返回值，递归函数就需要返回值。**
- - **如果要搜索其中一条符合条件的路径，那么递归一定需要返回值，因为遇到符合条件的路径了就要及时返回。**
+今天的题目还是比较的有难度的，涉及到了在二叉搜索树里用双指针，还有就是回溯。当需要从下往上去遍历时，就用后序遍历。
