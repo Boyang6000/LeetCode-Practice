@@ -43,14 +43,14 @@ class Solution {
 
 <br>
 
-## 112. 路径总和
-- 题目链接：[**LeetCode 112. Path Sum**](https://leetcode.com/problems/path-sum/)
+## 617. 合并二叉树
+- 题目链接：[**LeetCode 617. Merge Two Binary Trees**](https://leetcode.com/problems/merge-two-binary-trees/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。不要去计算这一条path上的sum，而是去做减法。当targetSum等于0且当前node是叶子时return true。
+这道题也是采用了recursion的方法。当其中一个node是null的时候，return另一个node就行。
 
 
 <br>
@@ -58,15 +58,14 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        if(root == null) return false;
-        targetSum -= root.val;
-        if(root.left == null && root.right == null) return targetSum == 0;
-        boolean left = hasPathSum(root.left, targetSum);
-        if(left) return true;
-        boolean right = hasPathSum(root.right, targetSum);
-        if(right) return true;
-        return false;
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if(root1 == null) return root2;
+        if(root2 == null) return root1;
+        
+        TreeNode root = new TreeNode(root1.val + root2.val);
+        root.left = mergeTrees(root1.left, root2.left);
+        root.right = mergeTrees(root1.right, root2.right);
+        return root;
     }
 }
 ```
