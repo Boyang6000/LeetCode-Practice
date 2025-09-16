@@ -28,16 +28,14 @@ class Solution {
 
 <br>
 
-## 501. 二叉搜索树中的众数
-- 题目链接：[**LeetCode 501. Find Mode in Binary Search Tree**](https://leetcode.com/problems/find-mode-in-binary-search-tree/)
+## 701. 二叉搜索树中的插入操作
+- 题目链接：[**LeetCode 701. Insert into a Binary Search Tree**](https://leetcode.com/problems/insert-into-a-binary-search-tree/)
 - 关键词：**Recursion**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。相对来说还是比较有难度的，因为二叉搜索树的特性，我们可以不用map，然后只遍历一次就能得出所有众数。
-
-创建一个count和maxCount，当pre是null或者root和pre不一样时，count重新回到1，一样的话count就增加。当每次count大于maxCount时，清除掉list里面的所有数字，把当前出现次数最多的数字加入到list里面，然后update maxCount。当count等于maxCount时，把当前node的值加入到list里面。
+这道题也是采用了recursion的方法。当当前root值大于val，就在左边寻找；当当前root值小于val，就在右边寻找。
 
 
 <br>
@@ -45,45 +43,14 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    int maxCount;
-    int count;
-    ArrayList<Integer> resList;
-    TreeNode pre;
-
-    public int[] findMode(TreeNode root) {
-        resList = new ArrayList<>();
-        maxCount = 0; 
-        count = 0;
-        pre = null;
-        findHelper(root);
-        int[] res = new int[resList.size()];
-        for(int i = 0; i < resList.size(); i++){
-            res[i] = resList.get(i);
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if(root == null){
+            root = new TreeNode(val);
+            return root;
         }
-        return res;
-    }
-
-    public void findHelper(TreeNode root){
-        if(root == null) return;
-        findHelper(root.left);
-
-        int rootValue = root.val;
-        if(pre == null || rootValue != pre.val){
-            count = 1;
-        }
-        else{
-            count++;
-        }
-
-        if(count > maxCount){
-            resList.clear();
-            resList.add(rootValue);
-            maxCount = count;
-        }
-        else if(count == maxCount) resList.add(rootValue);
-        pre = root;
-
-        findHelper(root.right);
+        if(root.val > val) root.left = insertIntoBST(root.left, val);
+        if(root.val < val) root.right = insertIntoBST(root.right, val);
+        return root;
     }
 }
 ```
