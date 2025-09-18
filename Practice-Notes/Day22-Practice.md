@@ -1,29 +1,39 @@
-# 📝 LeetCode 学习日志 Day 21
+# 📝 LeetCode 学习日志 Day 22
 
 <br>
 
-## 669. 修剪二叉搜索树
-- 题目链接：[**LeetCode 669. Trim a Binary Search Tree**](https://leetcode.com/problems/trim-a-binary-search-tree/)
-- 关键词：**Recursion**  
+## 77. 修剪二叉搜索树
+- 题目链接：[**LeetCode 77. Combinations**](https://leetcode.com/problems/combinations/)
+- 关键词：**Backtracking**  
 
 <br>
 
 ## 💡 思路
-这道题比较的有困难，思路就是，如果当前节点的值小于low，就要把当前节点的右边trim了之后return右边的root。如果当前节点的值大于high的话，就要把左边trim了之后return左边的root。
+这道题是回溯算法的一个开始，也是最基础的用到回溯算法的问题。首先，确定回溯算法的终止条件，就是数组的size正好是k。其次单层搜索的逻辑就是用一个for循环来加入元素， 选取了第一个元素之后，对接下来的元素再进行递归。最后还得进行一次回溯，删除掉元素。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode trimBST(TreeNode root, int low, int high) {
-        if(root == null) return null;
-        if(root.val < low) return trimBST(root.right, low, high);
-        if(root.val > high) return trimBST(root.left, low, high);
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> combine(int n, int k) {
+        backtracking(n, k, 1);
+        return result;
+    }
 
-        root.left = trimBST(root.left, low, high);
-        root.right = trimBST(root.right, low, high);
-        return root;
+    public void backtracking(int n, int k, int startIndex){
+        if(path.size() == k){
+            result.add(new ArrayList(path));
+            return;
+        }
+
+        for(int i = startIndex; i <= n - (k - path.size()) + 1; i++){
+            path.add(i);
+            backtracking(n, k, i + 1);
+            path.removeLast();
+        }
     }
 }
 ```
