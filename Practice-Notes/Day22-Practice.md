@@ -84,33 +84,41 @@ class Solution {
 
 <br>
 
-## 538. 把二叉搜索树转换为累加树
-- 题目链接：[**LeetCode 538. Convert BST to Greater Tree**](https://leetcode.com/problems/convert-bst-to-greater-tree/)
-- 关键词：**Recursion**
+## 17. 电话号码的字母组合
+- 题目链接：[**LeetCode 17. Letter Combinations of a Phone Numberr**](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+- 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题可以参考538，采用右中左的方式完成，只要update value就行。
+这道题相对有点难度，先把0-9变成一个string array，然后把每个数字代表的字母放到这个array里面，进行backtracking。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    int sum;
-    public TreeNode convertBST(TreeNode root) {
-        sum = 0;
-        convertBST1(root);
-        return root;
+    List<String> list = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+        if(digits == null || digits.length() == 0) return list;
+        String[] numString = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        backtracking(digits, numString, 0);
+        return list;
     }
 
-    public void convertBST1(TreeNode root){
-        if(root == null) return;
-        convertBST1(root.right);
-        sum += root.val;
-        root.val = sum;
-        convertBST1(root.left);
+    StringBuilder temp = new StringBuilder();
+    public void backtracking(String digits, String[] numString, int num){
+        if(num == digits.length()){
+            list.add(temp.toString());
+            return;
+        }
+
+        String str = numString[digits.charAt(num) - '0'];
+        for(int i = 0; i < str.length(); i++){
+            temp.append(str.charAt(i));
+            backtracking(digits, numString, num + 1);
+            temp.deleteCharAt(temp.length() -1);
+        }
     }
 }
 ```
@@ -118,4 +126,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-总体而言，今天的题目难度不是很大，但是自己在写recursion的感觉就是没有什么信心，思路很接近但是很难写出正确的代码，似乎知道怎么做但是还是差一口气，说明练习有效果但是还不够多。
+今天的题目是对回溯的一个介绍，回溯和递归是类似的逻辑，理解起来会有些难度，回溯主要用在组合问题上，本质上也是一种brutal Force，还需多加练习才会熟练。
