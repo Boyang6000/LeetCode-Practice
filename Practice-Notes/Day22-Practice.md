@@ -40,14 +40,14 @@ class Solution {
 
 <br>
 
-## 108. 将有序数组转换为二叉搜索树  
-- 题目链接：[**LeetCode 108. Convert Sorted Array to Binary Search Tree**](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/)
-- 关键词：**Recursion**
+## 216. 组合总和III  
+- 题目链接：[**LeetCode 216. Combination Sum III**](https://leetcode.com/problems/combination-sum-iii/description/)
+- 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题也是采用了recursion的方法。找到中间root的index，将这个array分成两部分，然后重复操作找root.left和root.right。
+这道题跟77的思路类似，就是要添加一个parameter sum。
 
 
 <br>
@@ -55,18 +55,29 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public TreeNode sortedArrayToBST(int[] nums) {
-        return sortedArrayToBST(nums, 0, nums.length);
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        backtracking(k, n, 1, 0);
+        return result;
     }
 
-    public TreeNode sortedArrayToBST(int[] nums, int left, int right){
-        if(left >= right) return null;
-        if(right - left == 1) return new TreeNode(nums[left]);
-        int middle = left + (right - left) / 2;
-        TreeNode root = new TreeNode(nums[middle]);
-        root.left = sortedArrayToBST(nums, left, middle);
-        root.right = sortedArrayToBST(nums, middle + 1, right);
-        return root;
+    public void backtracking(int k, int n, int startIndex, int sum){
+        if(sum > n) return;
+        if(path.size() == k){
+            if(sum == n){
+                result.add(new ArrayList<>(path));
+                return;
+            }
+        }
+
+        for(int i = startIndex; i <= 9 - (k - path.size()) + 1; i++){
+            path.add(i);
+            sum += i;
+            backtracking(k, n, i+1, sum);
+            path.removeLast();
+            sum -= i;
+        }
     }
 }
 ```
