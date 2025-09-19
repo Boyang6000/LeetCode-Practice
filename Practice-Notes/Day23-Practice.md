@@ -1,15 +1,15 @@
-# 📝 LeetCode 学习日志 Day 22
+# 📝 LeetCode 学习日志 Day 23
 
 <br>
 
-## 77. 修剪二叉搜索树
-- 题目链接：[**LeetCode 77. Combinations**](https://leetcode.com/problems/combinations/)
+## 39. 组合总和
+- 题目链接：[**LeetCode 39. Combination Sum**](https://leetcode.com/problems/combination-sum/)
 - 关键词：**Backtracking**  
 
 <br>
 
 ## 💡 思路
-这道题是回溯算法的一个开始，也是最基础的用到回溯算法的问题。首先，确定回溯算法的终止条件，就是数组的size正好是k。其次单层搜索的逻辑就是用一个for循环来加入元素， 选取了第一个元素之后，对接下来的元素再进行递归。最后还得进行一次回溯，删除掉元素。
+这道题也是使用了回溯算法，不过sum的update是通过parameter来update的，怎么让数字能重复选择呢，保持你的startIndex，这样每次递归的时候都是在同一个index上面寻找，进入下一个index是由for loop来控制。
 
 <br>
 
@@ -18,20 +18,23 @@
 class Solution {
     List<List<Integer>> result = new ArrayList<>();
     LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> combine(int n, int k) {
-        backtracking(n, k, 1);
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        Arrays.sort(candidates);
+        backtracking(candidates, target, 0, 0);
         return result;
     }
 
-    public void backtracking(int n, int k, int startIndex){
-        if(path.size() == k){
-            result.add(new ArrayList(path));
+    public void backtracking(int[] candidates, int target, int sum, int startIndex){
+        if(sum > target) return;
+        if(sum == target){
+            result.add(new ArrayList<>(path));
             return;
         }
 
-        for(int i = startIndex; i <= n - (k - path.size()) + 1; i++){
-            path.add(i);
-            backtracking(n, k, i + 1);
+        for(int i = startIndex; i < candidates.length ;i++){
+            if(sum + candidates[i] > target) break;
+            path.add(candidates[i]);
+            backtracking(candidates, target, sum + candidates[i], i);
             path.removeLast();
         }
     }
