@@ -41,7 +41,7 @@ class Solution {
 <br>
 
 ## 216. 组合总和III  
-- 题目链接：[**LeetCode 216. Combination Sum III**](https://leetcode.com/problems/combination-sum-iii/description/)
+- 题目链接：[**LeetCode 216. Combination Sum III**](https://leetcode.com/problems/combination-sum-iii/)
 - 关键词：**Backtracking**
 
 <br>
@@ -85,7 +85,7 @@ class Solution {
 <br>
 
 ## 17. 电话号码的字母组合
-- 题目链接：[**LeetCode 17. Letter Combinations of a Phone Numberr**](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
+- 题目链接：[**LeetCode 17. Letter Combinations of a Phone Number**](https://leetcode.com/problems/letter-combinations-of-a-phone-number/)
 - 关键词：**Backtracking**
 
 <br>
