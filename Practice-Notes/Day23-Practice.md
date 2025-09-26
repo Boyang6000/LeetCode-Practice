@@ -89,45 +89,46 @@ class Solution {
 
 <br>
 
-## 17. 电话号码的字母组合
-- 题目链接：[**LeetCode 17. Letter Combinations of a Phone Numberr**](https://leetcode.com/problems/combination-sum-ii/description/)
+## 131. 分割回文串
+- 题目链接：[**LeetCode 131. Palindrome Partitioning**](https://leetcode.com/problems/palindrome-partitioning/)
 - 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题相对有点难度，先把0-9变成一个string array，然后把每个数字代表的字母放到这个array里面，进行backtracking。
+分割其实跟组合问题是一样的，都是可以通过回溯来解决的，这里只需要多加一个method来确认当前stringbuilder是否为回文就行了
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    int sum = 0;
-
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        backtracking(candidates, target, 0);
+    List<List<String>> result = new ArrayList<>();
+    List<String> cur = new ArrayList<>();
+    public List<List<String>> partition(String s) {
+        backtracking(s, 0, new StringBuilder());
         return result;
     }
-
-    public void backtracking(int[] candidates, int target, int startIndex){
-        if(sum == target){
-            result.add(new ArrayList<>(path));
+    private void backtracking(String s, int start, StringBuilder sb){
+        if(start == s.length()){
+            result.add(new ArrayList<>(cur));
             return;
         }
-
-        for(int i = startIndex; i < candidates.length && sum < target; i++){
-            if(i > startIndex && candidates[i-1] == candidates[i]) continue;
-            path.add(candidates[i]);
-            sum += candidates[i];
-            backtracking(candidates, target, i + 1);
-            int temp = path.getLast();
-            sum -= temp;
-            path.removeLast();
+        for(int i = start; i < s.length(); i++){
+            sb.append(s.charAt(i));
+            if(check(sb)){
+                cur.add(sb.toString());
+                backtracking(s, i + 1, new StringBuilder());
+                cur.remove(cur.size() - 1);
+            }
         }
+    }
+
+    private boolean check(StringBuilder sb){
+        for(int i = 0; i < sb.length() / 2; i++){
+            if(sb.charAt(i) != sb.charAt(sb.length() - i - 1)) return false;
+        }
+        return true;
     }
 }
 ```
@@ -135,4 +136,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目是对回溯的一个介绍，回溯和递归是类似的逻辑，理解起来会有些难度，回溯主要用在组合问题上，本质上也是一种brutal Force，还需多加练习才会熟练。
+今天的题目是对回溯的一个练习，回溯和递归是类似的逻辑，理解起来会有些难度，回溯主要用在组合问题上，本质上也是一种brutal Force，还需多加练习才会熟练。
