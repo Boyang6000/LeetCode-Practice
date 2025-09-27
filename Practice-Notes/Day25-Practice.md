@@ -44,14 +44,14 @@ class Solution {
 
 <br>
 
-## 78. 子集
-- 题目链接：[**LeetCode 78. Subsets**](https://leetcode.com/problems/subsets/)
+## 46. 全排列
+- 题目链接：[**LeetCode 46. Permutations**](https://leetcode.com/problems/permutations/)
 - 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题就是比较基础的backtracking运用。
+这道题就是比较基础的backtracking运用, 对于重复的数字，这里可以运用到linkedlist里面的method contains来检查是否已经选取过元素。
 
 
 <br>
@@ -60,20 +60,23 @@ class Solution {
 ```java
 class Solution {
     List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> item = new LinkedList<>();
-    public List<List<Integer>> subsets(int[] nums) {
-        if(nums == null || nums.length == 0) return result;
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> permute(int[] nums) {
         backtracking(nums, 0);
         return result;
     }
 
     private void backtracking(int[] nums, int startIndex){
-        result.add(new ArrayList<>(item));
-        if(startIndex >= nums.length) return;
+        if(path.size() == nums.length){
+            result.add(new ArrayList<>(path));
+        }
         for(int i = startIndex; i < nums.length; i++){
-            item.add(nums[i]);
-            backtracking(nums, i + 1);
-            item.removeLast();
+            if(path.contains(nums[i])){
+                continue;
+            }
+            path.add(nums[i]);
+            backtracking(nums, startIndex);
+            path.removeLast();
         }
     }
 }
