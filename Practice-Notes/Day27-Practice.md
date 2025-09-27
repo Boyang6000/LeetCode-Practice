@@ -1,15 +1,15 @@
-# 📝 LeetCode 学习日志 Day 26
+# 📝 LeetCode 学习日志 Day 27
 
 <br>
 
-## 491. 递增子序列 
-- 题目链接：[**LeetCode 491. Non Decreasing Subsequences**](https://leetcode.com/problems/non-decreasing-subsequences/)
-- 关键词：**Backtracking**  
+## 455. 分发饼干 
+- 题目链接：[**LeetCode 455. Assign Cookies**](https://leetcode.com/problems/assign-cookies/)
+- 关键词：**Greedy**  
 
 <br>
 
 ## 💡 思路
-这道题也是运用了回溯法来实现的。这里需要注意两点，第一点是检查path size是不是大于1，如果是的话就把这个path放到result里面。其次是判断nums[i]是否加入到path里面。如果nums[i]小于path最后一位，则不加入；如果nums[i]已经用过了（用used数组来判断是否用过），则不考虑加入。
+这道题采用了贪心算法，可以考虑大饼干先满足大胃口，或者小饼干先满足小胃口。
 
 
 <br>
@@ -17,27 +17,19 @@
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> findSubsequences(int[] nums) {
-        backtracking(nums, 0);
-        return result;
-    }
-
-    private void backtracking(int[] nums, int startIndex){
-        if(path.size() > 1){
-            result.add(new ArrayList<>(path));
-        }
-        int[] used = new int[201];
-        for(int i = startIndex; i < nums.length; i++){
-            if(!path.isEmpty() && nums[i] < path.get(path.size() - 1) || (used[nums[i] + 100] == 1)){
-                continue;
+    public int findContentChildren(int[] g, int[] s) {
+        if(g.length == 0 || s.length == 0) return 0;
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int count = 0;
+        int index = s.length - 1;
+        for(int i = g.length - 1; i >= 0; i--){
+            if(index >= 0 && g[i] <= s[index]){
+                count++;
+                index--;
             }
-            used[nums[i] + 100] = 1;
-            path.add(nums[i]);
-            backtracking(nums, i + 1);
-            path.remove(path.size() - 1);
         }
+        return count;
     }
 }
 ```
