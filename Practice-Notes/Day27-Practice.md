@@ -36,14 +36,14 @@ class Solution {
 
 <br>
 
-## 46. 全排列
-- 题目链接：[**LeetCode 46. Permutations**](https://leetcode.com/problems/permutations/)
-- 关键词：**Backtracking**
+## 376. 摆动序列
+- 题目链接：[**LeetCode 376. Wiggle Subsequence**](https://leetcode.com/problems/wiggle-subsequence/)
+- 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题就是比较基础的backtracking运用, 对于重复的数字，这里可以运用到linkedlist里面的method contains来检查是否已经选取过元素。
+这道题采用的是贪心算法，直接去看这个数字前后的差值。
 
 
 <br>
@@ -51,25 +51,19 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> permute(int[] nums) {
-        backtracking(nums, 0);
-        return result;
-    }
-
-    private void backtracking(int[] nums, int startIndex){
-        if(path.size() == nums.length){
-            result.add(new ArrayList<>(path));
-        }
-        for(int i = startIndex; i < nums.length; i++){
-            if(path.contains(nums[i])){
-                continue;
+    public int wiggleMaxLength(int[] nums) {
+        if(nums.length <= 1) return nums.length;
+        int curdiff = 0;
+        int prediff = 0;
+        int count = 1;
+        for(int i = 1; i < nums.length; i++){
+            curdiff = nums[i] - nums[i - 1];
+            if((curdiff > 0 && prediff <= 0 || (curdiff < 0 && prediff >= 0))){
+                count++;
+                prediff = curdiff;
             }
-            path.add(nums[i]);
-            backtracking(nums, startIndex);
-            path.removeLast();
         }
+        return count;
     }
 }
 ```
