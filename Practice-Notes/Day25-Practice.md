@@ -84,14 +84,14 @@ class Solution {
 
 <br>
 
-## 90. 子集II
-- 题目链接：[**LeetCode 90. Subsets II**](https://leetcode.com/problems/subsets-ii/)
+## 47. 全排列 II
+- 题目链接：[**LeetCode 47. Permutations II**](https://leetcode.com/problems/permutations-ii/)
 - 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题的思路跟78是一样的，只不过多了一个去重，去重之前需要先把array sort一下，这样当当前index的数字和前一个index数字相同时，直接continue。
+这道题主要是考虑去重的逻辑，当这个index的数字与前一个index相等并且前一个index已经被读取了,那就跳过。
 
 <br>
 
@@ -100,19 +100,30 @@ class Solution {
 class Solution {
     List<List<Integer>> result = new ArrayList<>();
     LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> subsetsWithDup(int[] nums) {
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        boolean[] used = new boolean[nums.length];
+        Arrays.fill(used, false);
         Arrays.sort(nums);
-        backtracking(nums, 0);
+        backtracking(nums, used);
         return result;
     }
 
-    private void backtracking(int[] nums, int startIndex){
-        result.add(new ArrayList<>(path));
-        for(int i = startIndex; i < nums.length; i++){
-            if(i > startIndex && nums[i] == nums[i - 1]) continue;
-            path.add(nums[i]);
-            backtracking(nums, i + 1);
-            path.removeLast();
+    private void backtracking(int[] nums, boolean[] used){
+        if(path.size() == nums.length){
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for(int i = 0; i < nums.length; i++){
+            if(i > 0 && nums[i] == nums[i - 1] && used[i - 1] == false){
+                continue;
+            }
+            if(used[i] == false){
+                used[i] = true;
+                path.add(nums[i]);
+                backtracking(nums, used);
+                path.removeLast();
+                used[i] = false;
+            }
         }
     }
 }
@@ -121,4 +132,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目是对回溯的一个练习，回溯和递归是类似的逻辑，理解起来会有些难度，需要熟练掌握回溯的写法，对于不同情况的运用随机应变。
+今天的题目是对回溯的一个练习，重点运用到了used array去进行去重，去重之前一定要先进行sort。
