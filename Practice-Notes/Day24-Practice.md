@@ -2,41 +2,66 @@
 
 <br>
 
-## 39. 组合总和
-- 题目链接：[**LeetCode 39. Combination Sum**](https://leetcode.com/problems/combination-sum/)
+## 93. 复原IP地址 
+- 题目链接：[**LeetCode 93. Restore IP Address**](https://leetcode.com/problems/restore-ip-addresses/)
 - 关键词：**Backtracking**  
 
 <br>
 
 ## 💡 思路
-这道题也是使用了回溯算法，不过sum的update是通过parameter来update的，怎么让数字能重复选择呢，保持你的startIndex，这样每次递归的时候都是在同一个index上面寻找，进入下一个index是由for loop来控制。
+这道题也是使用了回溯算法。重点在于怎么把s分成四段然后验证每一段是否是valid ip。这里我们增加了一个变量pointNum来记录加了几个.
+
+判断段位是否是有效段位主要考虑到如下三点：
+
+ - 段位以0为开头的数字不合法
+ - 段位里有非正整数字符不合法
+ - 段位如果大于255了不合法
+
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        backtracking(candidates, target, 0, 0);
+    List<String> result = new ArrayList<>();
+    public List<String> restoreIpAddresses(String s) {
+        if(s.length() > 12) return result;
+        backtracking(s, 0, 0);
         return result;
     }
 
-    public void backtracking(int[] candidates, int target, int sum, int startIndex){
-        if(sum > target) return;
-        if(sum == target){
-            result.add(new ArrayList<>(path));
+    private void backtracking(String s, int startIndex, int pointNum){
+        if(pointNum == 3){
+            if(isValid(s, startIndex, s.length() - 1)){
+                result.add(s);
+            }
             return;
         }
 
-        for(int i = startIndex; i < candidates.length ;i++){
-            if(sum + candidates[i] > target) break;
-            path.add(candidates[i]);
-            backtracking(candidates, target, sum + candidates[i], i);
-            path.removeLast();
+        for(int i = startIndex; i < s.length(); i++){
+            if(isValid(s, startIndex, i)){
+                s = s.substring(0, i + 1) + "." + s.substring(i + 1);
+                pointNum++;
+                backtracking(s, i + 2, pointNum);
+                pointNum--;
+                s = s.substring(0, i + 1) + s.substring(i + 2);
+            }
+            else{
+                break;
+            }
         }
+    }
+
+    private boolean isValid(String s, int start, int end){
+        if(start > end) return false;
+        if(s.charAt(start) == '0' && start != end) return false;
+        int num = 0;
+        for(int i = start; i <= end; i++){
+            if(s.charAt(i) >'9' || s.charAt(i) < '0') return false;
+            num = num * 10 + (s.charAt(i) - '0');
+            if(num > 255) return false;
+        }
+        return true;
     }
 }
 ```
