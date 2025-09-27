@@ -2,20 +2,14 @@
 
 <br>
 
-## 93. 复原IP地址 
-- 题目链接：[**LeetCode 93. Restore IP Address**](https://leetcode.com/problems/restore-ip-addresses/)
+## 491. 递增子序列 
+- 题目链接：[**LeetCode 491. Non Decreasing Subsequences**](https://leetcode.com/problems/non-decreasing-subsequences/)
 - 关键词：**Backtracking**  
 
 <br>
 
 ## 💡 思路
-这道题也是使用了回溯算法。重点在于怎么把s分成四段然后验证每一段是否是valid ip。这里我们增加了一个变量pointNum来记录加了几个.
-
-判断段位是否是有效段位主要考虑到如下三点：
-
- - 段位以0为开头的数字不合法
- - 段位里有非正整数字符不合法
- - 段位如果大于255了不合法
+这道题也是运用了回溯法来实现的。这里需要注意两点，第一点是检查path size是不是大于1，如果是的话就把这个path放到result里面。其次是判断nums[i]是否加入到path里面。如果nums[i]小于path最后一位，则不加入；如果nums[i]已经用过了（用used数组来判断是否用过），则不考虑加入。
 
 
 <br>
@@ -23,45 +17,27 @@
 ## 💻 代码实现
 ```java
 class Solution {
-    List<String> result = new ArrayList<>();
-    public List<String> restoreIpAddresses(String s) {
-        if(s.length() > 12) return result;
-        backtracking(s, 0, 0);
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> findSubsequences(int[] nums) {
+        backtracking(nums, 0);
         return result;
     }
 
-    private void backtracking(String s, int startIndex, int pointNum){
-        if(pointNum == 3){
-            if(isValid(s, startIndex, s.length() - 1)){
-                result.add(s);
-            }
-            return;
+    private void backtracking(int[] nums, int startIndex){
+        if(path.size() > 1){
+            result.add(new ArrayList<>(path));
         }
-
-        for(int i = startIndex; i < s.length(); i++){
-            if(isValid(s, startIndex, i)){
-                s = s.substring(0, i + 1) + "." + s.substring(i + 1);
-                pointNum++;
-                backtracking(s, i + 2, pointNum);
-                pointNum--;
-                s = s.substring(0, i + 1) + s.substring(i + 2);
+        int[] used = new int[201];
+        for(int i = startIndex; i < nums.length; i++){
+            if(!path.isEmpty() && nums[i] < path.get(path.size() - 1) || (used[nums[i] + 100] == 1)){
+                continue;
             }
-            else{
-                break;
-            }
+            used[nums[i] + 100] = 1;
+            path.add(nums[i]);
+            backtracking(nums, i + 1);
+            path.remove(path.size() - 1);
         }
-    }
-
-    private boolean isValid(String s, int start, int end){
-        if(start > end) return false;
-        if(s.charAt(start) == '0' && start != end) return false;
-        int num = 0;
-        for(int i = start; i <= end; i++){
-            if(s.charAt(i) >'9' || s.charAt(i) < '0') return false;
-            num = num * 10 + (s.charAt(i) - '0');
-            if(num > 255) return false;
-        }
-        return true;
     }
 }
 ```
