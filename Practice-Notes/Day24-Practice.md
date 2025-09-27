@@ -68,14 +68,14 @@ class Solution {
 
 <br>
 
-## 40. 组合总和II
-- 题目链接：[**LeetCode 40. Combination Sum II**](https://leetcode.com/problems/combination-sum-ii/)
+## 78. 子集
+- 题目链接：[**LeetCode 78. Subsets**](https://leetcode.com/problems/subsets/)
 - 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-这道题跟39类似，先sort array然后加个去重就行。
+这道题就是比较基础的backtracking运用。
 
 
 <br>
@@ -84,29 +84,20 @@ class Solution {
 ```java
 class Solution {
     List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    int sum = 0;
-
-    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        backtracking(candidates, target, 0);
+    LinkedList<Integer> item = new LinkedList<>();
+    public List<List<Integer>> subsets(int[] nums) {
+        if(nums == null || nums.length == 0) return result;
+        backtracking(nums, 0);
         return result;
     }
 
-    public void backtracking(int[] candidates, int target, int startIndex){
-        if(sum == target){
-            result.add(new ArrayList<>(path));
-            return;
-        }
-
-        for(int i = startIndex; i < candidates.length && sum < target; i++){
-            if(i > startIndex && candidates[i-1] == candidates[i]) continue;
-            path.add(candidates[i]);
-            sum += candidates[i];
-            backtracking(candidates, target, i + 1);
-            int temp = path.getLast();
-            sum -= temp;
-            path.removeLast();
+    private void backtracking(int[] nums, int startIndex){
+        result.add(new ArrayList<>(item));
+        if(startIndex >= nums.length) return;
+        for(int i = startIndex; i < nums.length; i++){
+            item.add(nums[i]);
+            backtracking(nums, i + 1);
+            item.removeLast();
         }
     }
 }
