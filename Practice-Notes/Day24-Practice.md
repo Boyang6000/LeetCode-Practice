@@ -105,46 +105,36 @@ class Solution {
 
 <br>
 
-## 131. 分割回文串
-- 题目链接：[**LeetCode 131. Palindrome Partitioning**](https://leetcode.com/problems/palindrome-partitioning/)
+## 90. 子集II
+- 题目链接：[**LeetCode 90. Subsets II**](https://leetcode.com/problems/subsets-ii/)
 - 关键词：**Backtracking**
 
 <br>
 
 ## 💡 思路
-分割其实跟组合问题是一样的，都是可以通过回溯来解决的，这里只需要多加一个method来确认当前stringbuilder是否为回文就行了
+这道题的思路跟78是一样的，只不过多了一个去重，去重之前需要先把array sort一下，这样当当前index的数字和前一个index数字相同时，直接continue。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<String>> result = new ArrayList<>();
-    List<String> cur = new ArrayList<>();
-    public List<List<String>> partition(String s) {
-        backtracking(s, 0, new StringBuilder());
+    List<List<Integer>> result = new ArrayList<>();
+    LinkedList<Integer> path = new LinkedList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        backtracking(nums, 0);
         return result;
     }
-    private void backtracking(String s, int start, StringBuilder sb){
-        if(start == s.length()){
-            result.add(new ArrayList<>(cur));
-            return;
-        }
-        for(int i = start; i < s.length(); i++){
-            sb.append(s.charAt(i));
-            if(check(sb)){
-                cur.add(sb.toString());
-                backtracking(s, i + 1, new StringBuilder());
-                cur.remove(cur.size() - 1);
-            }
-        }
-    }
 
-    private boolean check(StringBuilder sb){
-        for(int i = 0; i < sb.length() / 2; i++){
-            if(sb.charAt(i) != sb.charAt(sb.length() - i - 1)) return false;
+    private void backtracking(int[] nums, int startIndex){
+        result.add(new ArrayList<>(path));
+        for(int i = startIndex; i < nums.length; i++){
+            if(i > startIndex && nums[i] == nums[i - 1]) continue;
+            path.add(nums[i]);
+            backtracking(nums, i + 1);
+            path.removeLast();
         }
-        return true;
     }
 }
 ```
@@ -152,4 +142,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目是对回溯的一个练习，回溯和递归是类似的逻辑，理解起来会有些难度，回溯主要用在组合问题上，本质上也是一种brutal Force，还需多加练习才会熟练。
+今天的题目是对回溯的一个练习，回溯和递归是类似的逻辑，理解起来会有些难度，需要熟练掌握回溯的写法，对于不同情况的运用随机应变。
