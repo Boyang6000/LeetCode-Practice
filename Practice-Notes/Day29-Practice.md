@@ -2,18 +2,16 @@
 
 <br>
 
-## 122.买卖股票的最佳时机II
-- 题目链接：[**LeetCode 122. Best Time to Buy and Sell Stock II**](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
+## 134. 加油站
+- 题目链接：[**LeetCode 134. Gas Station**](https://leetcode.com/problems/gas-station/)
 - 关键词：**Greedy**  
 
 <br>
 
 ## 💡 思路
-这道题采用了贪心算法,是一个非常巧妙的思路。因为只能有一股，当前只有买股票和卖股票两个操作，那么可以把利润分解到每天为单位的维度
+这道题采用了贪心算法,是一个非常巧妙的思路。首先很明显的就是，如果totalGas < totalCost的话，是肯定跑不完一圈的。
 
-例如你在第0天买，第3天卖，那么利润就是prices[3] - prices[0] = (prices[3] - prices[2]) + (prices[2] - prices[1]) + (prices[1] - prices[0])
-
-最后只要把利润是正的加在一起就行。
+那重点就在于怎么去寻找可以跑完一圈的那个点。可以通过计算一段区间的totalSum，如果这个区间的totalSum < 0, 说明不是从里面的这个点开始的，那么start点就应该是 i + 1。
 
 
 <br>
@@ -21,18 +19,20 @@
 ## 💻 代码实现
 ```java
 class Solution {
-    public int maxProfit(int[] prices) {
-        int[] profit = new int[prices.length - 1];
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int curSum = 0;
+        int totalSum = 0;
         int index = 0;
-        int sum = 0;
-        for(int i = 1; i < prices.length; i++){
-            profit[index] = prices[i] - prices[index];
-            if(profit[index] > 0){
-                sum += profit[index];
+        for(int i = 0; i < gas.length; i++){
+            curSum += gas[i] - cost[i];
+            totalSum += gas[i] - cost[i];
+            if(curSum < 0){
+                index = i + 1;
+                curSum = 0;
             }
-            index++;
         }
-        return sum;
+        if(totalSum < 0) return -1;
+        return index;
     }
 }
 ```
