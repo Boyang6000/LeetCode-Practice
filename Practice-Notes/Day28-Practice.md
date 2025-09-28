@@ -100,5 +100,50 @@ class Solution {
 
 <br>
 
+## 1005. K次取反后最大化的数组和
+- 题目链接：[**LeetCode 1005. Maximize Sum of Array After K Negations**](https://leetcode.com/problems/maximize-sum-of-array-after-k-negations/)
+- 关键词：**Greedy**
+
+<br>
+
+## 💡 思路
+这道题要进行两次贪心算法。先是sort一次，把负数都变成正数。再sort一次后，把最小的数字变成相反数。
+
+原理就在于，有些负数的绝对值会比正数的大，当k的值大于负数的个数时，只能将最小的几个正数变成负数。
+
+
+
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public int largestSumAfterKNegations(int[] nums, int k) {
+        if(nums.length == 1) return nums[0];
+        Arrays.sort(nums);
+        for(int i = 0; i < nums.length && k > 0; i++){
+            if(nums[i] < 0){
+                nums[i] = -nums[i];
+                k--;
+            }
+        }
+
+        if(k % 2 == 1){
+            Arrays.sort(nums);
+            nums[0] = -nums[0];
+        }
+
+        int sum = 0;
+        for(int num: nums){
+            sum += num;
+        }
+        return sum;
+    }
+}
+```
+
+<br>
+
 ## 📝 今日心得
 今天是对于贪心算法的一个介绍，有的题目的贪心算法就比较简单，有的就比较复杂，总体来讲就是看怎么能节省步骤，就是贪心的本质。
