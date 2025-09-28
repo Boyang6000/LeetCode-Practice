@@ -68,30 +68,32 @@ class Solution {
 
 <br>
 
-## 53. 最大子序和
-- 题目链接：[**LeetCode 53. Maximum Subarray**](https://leetcode.com/problems/maximum-subarray/)
+## 45. 跳跃游戏II
+- 题目链接：[**LeetCode 45. Jump Game II**](https://leetcode.com/problems/jump-game-ii/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这题贪心算法的思路在于，当当前subarray的sum小于等于0时，放弃当前array，转向下一个index开始进行计算。
+这道题跟55不同的点在于需要计算最短次数到达末尾。需要计算当前下标能到达的最远位置，如果最远位置是末尾，则次数不需要加1。如果不是末尾，则次数要加1。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int maxSubArray(int[] nums) {
-        if(nums.length == 1) return nums[0];
-        int sum = Integer.MIN_VALUE;
-        int count =  0;
-        for(int i = 0; i < nums.length; i++){
-            count += nums[i];
-            sum = Math.max(sum, count);
-            if(count <= 0) count = 0;
-       }
-       return sum;
+    public int jump(int[] nums) {
+        int result = 0;
+        int end = 0;
+        int temp = 0;
+        for(int i = 0; i <= end && end < nums.length - 1; i++){
+            temp = Math.max(temp, i + nums[i]);
+            if(i == end){
+                end = temp;
+                result++;
+            }
+        }
+        return result;
     }
 }
 ```
