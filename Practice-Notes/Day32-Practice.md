@@ -1,37 +1,52 @@
-# 📝 LeetCode 学习日志 Day 31
+# 📝 LeetCode 学习日志 Day 32
 
 <br>
 
-## 56. 合并区间
-- 题目链接：[**LeetCode 56. Merge Intervals**](https://leetcode.com/problems/merge-intervals/)
-- 关键词：**Greedy**  
+## 509. 斐波那契数
+- 题目链接：[**LeetCode 509. Fibonacci Number**](https://leetcode.com/problems/fibonacci-number/)
+- 关键词：**Dynamic Programming**  
 
 <br>
 
 ## 💡 思路
-这道题其实跟452和435是一样的。先确定两个interval是否重合，如果重合，就调整interval的末尾来cover两个interval。如果不重合就直接把这个interval加入到result里面。
+这道题是dp里面最基础的一道题。
 
+**动规五部曲：**
+
+这里我们要用一个一维dp数组来保存递归的结果
+
+ - 确定dp数组以及下标的含义：
+
+     - **dp[i]的定义为：第i个数的斐波那契数值是dp[i]**
+
+ - 确定递推公式
+     - 为什么这是一道非常简单的入门题目呢？因为题目已经把递推公式直接给我们了：**状态转移方程 dp[i] = dp[i - 1] + dp[i - 2];**
+
+ - dp数组如何初始化
+     - **dp[0] = 0; dp[1] = 1;**
+ 
+ - 确定遍历顺序
+     - 从递归公式dp[i] = dp[i - 1] + dp[i - 2];中可以看出，dp[i]是依赖 dp[i - 1] 和 dp[i - 2]，那么遍历的顺序一定是**从前到后**遍历的
+
+ - 举例推导dp数组
+     - 按照这个递推公式dp[i] = dp[i - 1] + dp[i - 2]，我们来推导一下，当N为10的时候，dp数组应该是如下的数列：
+
+        0 1 1 2 3 5 8 13 21 34 55
+        
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int[][] merge(int[][] intervals) {
-        List<int[]> result = new LinkedList<>();
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-        result.add(intervals[0]);
-        for(int i = 1; i < intervals.length; i++){
-            if(intervals[i][0] <= result.getLast()[1]){
-                int start = result.getLast()[0];
-                int end = Math.max(intervals[i][1], result.getLast()[1]);
-                result.removeLast();
-                result.add(new int[]{start, end});
-            }
-            else{
-                result.add(intervals[i]);
-            }
+    public int fib(int n) {
+        if(n <= 1) return n;
+        int[] dp = new int[n + 1];
+        dp[0] = 0;
+        dp[1] = 1;
+        for(int index = 2; index <= n; index++){
+            dp[index] = dp[index - 1] + dp[index - 2];
         }
-        return result.toArray(new int[result.size()][]);
+        return dp[n];
     }
 }
 ```
