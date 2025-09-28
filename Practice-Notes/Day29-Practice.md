@@ -82,32 +82,49 @@ class Solution {
 
 <br>
 
-## 45. 跳跃游戏II
-- 题目链接：[**LeetCode 45. Jump Game II**](https://leetcode.com/problems/jump-game-ii/)
+## 860. 柠檬水找零
+- 题目链接：[**LeetCode 860. Lemonade Change**](https://leetcode.com/problems/lemonade-change/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题跟55不同的点在于需要计算最短次数到达末尾。需要计算当前下标能到达的最远位置，如果最远位置是末尾，则次数不需要加1。如果不是末尾，则次数要加1。
+这道题其实非常简单，只需要控制好5元和10元的张数就行，有以下三种情况：
+
+ - 情况一：账单是5，直接收下。
+ - 情况二：账单是10，消耗一个5，增加一个10
+ - 情况三：账单是20，优先消耗一个10和一个5，如果不够，再消耗三个5
+
+为什么情况三要优先消耗10呢，因为10只能给20找零钱，而5更万能。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int jump(int[] nums) {
-        int result = 0;
-        int end = 0;
-        int temp = 0;
-        for(int i = 0; i <= end && end < nums.length - 1; i++){
-            temp = Math.max(temp, i + nums[i]);
-            if(i == end){
-                end = temp;
-                result++;
+    public boolean lemonadeChange(int[] bills) {
+        int five = 0;
+        int ten = 0;
+        for(int i = 0; i < bills.length; i++){
+            if(bills[i] == 5){
+                five++;
             }
+            else if(bills[i] == 10){
+                five--;
+                ten++;
+            }
+            else if(bills[i] == 20){
+                if(ten > 0){
+                    ten--;
+                    five--;
+                }
+                else{
+                    five -= 3;
+                }
+            }
+            if(five < 0 || ten < 0) return false;
         }
-        return result;
+        return true;
     }
 }
 ```
