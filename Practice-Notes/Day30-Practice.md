@@ -37,18 +37,14 @@ class Solution {
 
 <br>
 
-## 135. 分发糖果
-- 题目链接：[**LeetCode 135. Candy**](https://leetcode.com/problems/candy/)
+## 435. 无重叠区间
+- 题目链接：[**LeetCode 435. Non-overlapping Intervals**](https://leetcode.com/problems/non-overlapping-intervals/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题采用的是贪心算法，思路非常的巧妙。先跟左邻居进行比较，再跟右邻居进行比较。用一个int array来记录每个孩子的糖果数量。
-
-先进行一遍从左到右的遍历，起始值的candy设为1。当右边rating比左边大时，右边的candy数量就是左边的 + 1。
-
-再进行一遍从右到左的遍历，当左边rating比右边大时，比较array里面的的candy数量和右边 + 1的数量哪个大，就取哪个，确保左边的candy数量一定大于两边的。
+这道题采用的是贪心算法，跟452类似，只要减去箭的个数就是不重复的了。
 
 
 <br>
@@ -56,24 +52,19 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public int candy(int[] ratings) {
-        int len = ratings.length;
-        int[] candy = new int[len];
-        candy[0] = 1;
-        for(int i = 1; i < ratings.length; i++){
-            candy[i] = ratings[i] > ratings[i - 1] ? candy[i - 1] + 1 : 1;
-        }
+    public int eraseOverlapIntervals(int[][] intervals) {
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
 
-        for(int i = len - 2; i >= 0; i--){
-            if(ratings[i] > ratings[i + 1])
-            candy[i] = Math.max(candy[i + 1] + 1, candy[i]);
+        int count = 1;
+        for(int i = 1; i < intervals.length; i++){
+            if(intervals[i][0] < intervals[i-1][1]){
+                intervals[i][1] = Math.min(intervals[i][1], intervals[i-1][1]);
+            }
+            else{
+                count++;
+            }
         }
-
-        int sum = 0;
-        for(int num: candy){
-            sum += num;
-        }
-        return sum;
+        return intervals.length - count;
     }
 }
 ```
