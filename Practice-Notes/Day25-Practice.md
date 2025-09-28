@@ -3,7 +3,7 @@
 <br>
 
 ## 491. 递增子序列 
-- 题目链接：[**LeetCode 491. Non Decreasing Subsequences**](https://leetcode.com/problems/non-decreasing-subsequences/)
+- 题目链接：[**LeetCode 491. Non-decreasing Subsequences**](https://leetcode.com/problems/non-decreasing-subsequences/)
 - 关键词：**Backtracking**  
 
 <br>
