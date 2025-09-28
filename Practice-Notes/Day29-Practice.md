@@ -39,14 +39,18 @@ class Solution {
 
 <br>
 
-## 55. 跳跃游戏
-- 题目链接：[**LeetCode 55. Jump Game**](https://leetcode.com/problems/jump-game/)
+## 135. 分发糖果
+- 题目链接：[**LeetCode 135. Candy**](https://leetcode.com/problems/candy/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题采用的是贪心算法，计算跳跃可以覆盖的距离，如果距离大于等于长度，则可以实现跳跃到最后。
+这道题采用的是贪心算法，思路非常的巧妙。先跟左邻居进行比较，再跟右邻居进行比较。用一个int array来记录每个孩子的糖果数量。
+
+先进行一遍从左到右的遍历，起始值的candy设为1。当右边rating比左边大时，右边的candy数量就是左边的 + 1。
+
+再进行一遍从右到左的遍历，当左边rating比右边大时，比较array里面的的candy数量和右边 + 1的数量哪个大，就取哪个，确保左边的candy数量一定大于两边的。
 
 
 <br>
@@ -54,14 +58,24 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean canJump(int[] nums) {
-        int cover = 0;
-        if(nums.length == 1) return true;
-        for(int i = 0; i <= cover; i++){
-            cover = Math.max(i + nums[i], cover);
-            if(cover >= nums.length - 1) return true;
+    public int candy(int[] ratings) {
+        int len = ratings.length;
+        int[] candy = new int[len];
+        candy[0] = 1;
+        for(int i = 1; i < ratings.length; i++){
+            candy[i] = ratings[i] > ratings[i - 1] ? candy[i - 1] + 1 : 1;
         }
-        return false;
+
+        for(int i = len - 2; i >= 0; i--){
+            if(ratings[i] > ratings[i + 1])
+            candy[i] = Math.max(candy[i + 1] + 1, candy[i]);
+        }
+
+        int sum = 0;
+        for(int num: candy){
+            sum += num;
+        }
+        return sum;
     }
 }
 ```
