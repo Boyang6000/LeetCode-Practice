@@ -75,42 +75,5 @@ class Solution {
 
 <br>
 
-## 763. 划分字母区间 
-- 题目链接：[**LeetCode 763. Partition Labels**](https://leetcode.com/problems/partition-labels/)
-- 关键词：**Greedy**
-
-<br>
-
-## 💡 思路
-先找出每个字母出现的最迟的index，然后进行for loop，当当前index等于最迟index时，说明可以分割字母串，将这个字母串的长度放到list里面。
-
-<br>
-
-## 💻 代码实现
-```java
-class Solution {
-    public List<Integer> partitionLabels(String s) {
-        List<Integer> list = new LinkedList<>();
-        int[] edge = new int[26];
-        char[] chars = s.toCharArray();
-        for(int i = 0; i < chars.length; i++){
-            edge[chars[i] - 'a'] = i;
-        }
-        int idx = 0;
-        int last = -1;
-        for(int i = 0; i < chars.length; i++){
-            idx = Math.max(idx, edge[chars[i] - 'a']);
-            if(i == idx){
-                list.add(i - last);
-                last = i;
-            }
-        }
-        return list;
-    }
-}
-```
-
-<br>
-
 ## 📝 今日心得
-今天的内容都是处理重叠区域的，重点在于区域的划分，按照什么顺序来找。
+今天的内容都是处理重叠区域的，重点在于区域的划分，按照什么顺序来找。贪心算法还是很不好想的，当看到答案时又会发现其实思路是很简单的。
