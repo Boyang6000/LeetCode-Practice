@@ -70,47 +70,30 @@ class Solution {
 
 <br>
 
-## 47. 全排列 II
-- 题目链接：[**LeetCode 47. Permutations II**](https://leetcode.com/problems/permutations-ii/)
-- 关键词：**Backtracking**
+## 53. 最大子序和
+- 题目链接：[**LeetCode 53. Maximum Subarray**](https://leetcode.com/problems/maximum-subarray/)
+- 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题主要是考虑去重的逻辑，当这个index的数字与前一个index相等并且前一个index已经被读取了,那就跳过。
+这题贪心算法的思路在于，当当前subarray的sum小于等于0时，放弃当前array，转向下一个index开始进行计算。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    List<List<Integer>> result = new ArrayList<>();
-    LinkedList<Integer> path = new LinkedList<>();
-    public List<List<Integer>> permuteUnique(int[] nums) {
-        boolean[] used = new boolean[nums.length];
-        Arrays.fill(used, false);
-        Arrays.sort(nums);
-        backtracking(nums, used);
-        return result;
-    }
-
-    private void backtracking(int[] nums, boolean[] used){
-        if(path.size() == nums.length){
-            result.add(new ArrayList<>(path));
-            return;
-        }
+    public int maxSubArray(int[] nums) {
+        if(nums.length == 1) return nums[0];
+        int sum = Integer.MIN_VALUE;
+        int count =  0;
         for(int i = 0; i < nums.length; i++){
-            if(i > 0 && nums[i] == nums[i - 1] && used[i - 1] == false){
-                continue;
-            }
-            if(used[i] == false){
-                used[i] = true;
-                path.add(nums[i]);
-                backtracking(nums, used);
-                path.removeLast();
-                used[i] = false;
-            }
-        }
+            count += nums[i];
+            sum = Math.max(sum, count);
+            if(count <= 0) count = 0;
+       }
+       return sum;
     }
 }
 ```
@@ -118,4 +101,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天的题目是对回溯的一个练习，重点运用到了used array去进行去重，去重之前一定要先进行sort。
+今天是对于贪心算法的一个介绍，有的题目的贪心算法就比较简单，有的就比较复杂，总体来讲就是看怎么能节省步骤，就是贪心的本质。
