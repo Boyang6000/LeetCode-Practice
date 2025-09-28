@@ -71,88 +71,37 @@ class Solution {
 
 <br>
 
-## 860. 柠檬水找零
-- 题目链接：[**LeetCode 860. Lemonade Change**](https://leetcode.com/problems/lemonade-change/)
+## 763. 划分字母区间 
+- 题目链接：[**LeetCode 763. Partition Labels**](https://leetcode.com/problems/partition-labels/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题其实非常简单，只需要控制好5元和10元的张数就行，有以下三种情况：
-
- - 情况一：账单是5，直接收下。
- - 情况二：账单是10，消耗一个5，增加一个10
- - 情况三：账单是20，优先消耗一个10和一个5，如果不够，再消耗三个5
-
-为什么情况三要优先消耗10呢，因为10只能给20找零钱，而5更万能。
+先找出每个字母出现的最迟的index，然后进行for loop，当当前index等于最迟index时，说明可以分割字母串，将这个字母串的长度放到list里面。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean lemonadeChange(int[] bills) {
-        int five = 0;
-        int ten = 0;
-        for(int i = 0; i < bills.length; i++){
-            if(bills[i] == 5){
-                five++;
-            }
-            else if(bills[i] == 10){
-                five--;
-                ten++;
-            }
-            else if(bills[i] == 20){
-                if(ten > 0){
-                    ten--;
-                    five--;
-                }
-                else{
-                    five -= 3;
-                }
-            }
-            if(five < 0 || ten < 0) return false;
+    public List<Integer> partitionLabels(String s) {
+        List<Integer> list = new LinkedList<>();
+        int[] edge = new int[26];
+        char[] chars = s.toCharArray();
+        for(int i = 0; i < chars.length; i++){
+            edge[chars[i] - 'a'] = i;
         }
-        return true;
-    }
-}
-```
-
-<br>
-
-## 406. 根据身高重建队列
-- 题目链接：[**LeetCode 406. Queue Reconstruction by Height**](https://leetcode.com/problems/queue-reconstruction-by-height/)
-- 关键词：**Greedy**
-
-<br>
-
-## 💡 思路
-这道题跟135有些类似，其技巧都是确定一边然后贪心另一边，两边一起考虑，就会顾此失彼。
-
-先以高度来排序，从高到低，相同高度情况下k小的排在前面。
-
-之后再以k的值来决定插入linkedlist的index，保证有k个人高于当前这个人。
-
-
-
-<br>
-
-## 💻 代码实现
-```java
-class Solution {
-    public int[][] reconstructQueue(int[][] people) {
-        Arrays.sort(people, (a, b) -> {
-            if(a[0] == b[0]) return a[1] - b [1];
-            return b[0] - a[0];
-        });
-
-        LinkedList<int[]> que = new LinkedList<>();
-
-        for(int[] p: people){
-            que.add(p[1], p);
+        int idx = 0;
+        int last = -1;
+        for(int i = 0; i < chars.length; i++){
+            idx = Math.max(idx, edge[chars[i] - 'a']);
+            if(i == idx){
+                list.add(i - last);
+                last = i;
+            }
         }
-
-        return que.toArray(new int[people.length][]);
+        return list;
     }
 }
 ```
@@ -160,4 +109,4 @@ class Solution {
 <br>
 
 ## 📝 今日心得
-今天是对于贪心算法的一个介绍，有的题目的贪心算法就比较简单，有的就比较复杂。对于需要考虑两方面排序的问题，其技巧都是确定一边然后贪心另一边，两边一起考虑，就会顾此失彼。
+今天的内容都是处理重叠区域的，重点在于区域的划分，按照什么顺序来找。
