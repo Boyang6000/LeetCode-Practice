@@ -2,35 +2,36 @@
 
 <br>
 
-## 452. 用最少数量的箭引爆气球
-- 题目链接：[**LeetCode 452. Minimum Number of Arrows to Burst Balloons**](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
+## 56. 合并区间
+- 题目链接：[**LeetCode 56. Merge Intervals**](https://leetcode.com/problems/merge-intervals/)
 - 关键词：**Greedy**  
 
 <br>
 
 ## 💡 思路
-这道题采用了贪心算法。当两个区域有重叠时，可以通过一只箭射掉两个气球。
-
-当两个区域不重叠时，需要多一根箭；当两个区域重叠时，将当前区域的末尾调整成重叠末尾。
+这道题其实跟452和435是一样的。先确定两个interval是否重合，如果重合，就调整interval的末尾来cover两个interval。如果不重合就直接把这个interval加入到result里面。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int findMinArrowShots(int[][] points) {
-        Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
-
-        int count = 1;
-        for(int i = 1; i < points.length; i++){
-            if(points[i][0] > points[i-1][1]){
-                count++;
+    public int[][] merge(int[][] intervals) {
+        List<int[]> result = new LinkedList<>();
+        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
+        result.add(intervals[0]);
+        for(int i = 1; i < intervals.length; i++){
+            if(intervals[i][0] <= result.getLast()[1]){
+                int start = result.getLast()[0];
+                int end = Math.max(intervals[i][1], result.getLast()[1]);
+                result.removeLast();
+                result.add(new int[]{start, end});
             }
             else{
-                points[i][1] = Math.min(points[i][1], points[i-1][1]);
+                result.add(intervals[i]);
             }
         }
-        return count;
+        return result.toArray(new int[result.size()][]);
     }
 }
 ```
