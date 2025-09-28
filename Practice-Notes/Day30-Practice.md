@@ -1,38 +1,36 @@
-# 📝 LeetCode 学习日志 Day 29
+# 📝 LeetCode 学习日志 Day 30
 
 <br>
 
-## 134. 加油站
-- 题目链接：[**LeetCode 134. Gas Station**](https://leetcode.com/problems/gas-station/)
+## 452. 用最少数量的箭引爆气球
+- 题目链接：[**LeetCode 452. Minimum Number of Arrows to Burst Balloons**](https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/)
 - 关键词：**Greedy**  
 
 <br>
 
 ## 💡 思路
-这道题采用了贪心算法,是一个非常巧妙的思路。首先很明显的就是，如果totalGas < totalCost的话，是肯定跑不完一圈的。
+这道题采用了贪心算法。当两个区域有重叠时，可以通过一只箭射掉两个气球。
 
-那重点就在于怎么去寻找可以跑完一圈的那个点。可以通过计算一段区间的totalSum，如果这个区间的totalSum < 0, 说明不是从里面的这个点开始的，那么start点就应该是 i + 1。
-
+当两个区域不重叠时，需要多一根箭；当两个区域重叠时，将当前区域的末尾调整成重叠末尾。
 
 <br>
 
 ## 💻 代码实现
 ```java
 class Solution {
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        int curSum = 0;
-        int totalSum = 0;
-        int index = 0;
-        for(int i = 0; i < gas.length; i++){
-            curSum += gas[i] - cost[i];
-            totalSum += gas[i] - cost[i];
-            if(curSum < 0){
-                index = i + 1;
-                curSum = 0;
+    public int findMinArrowShots(int[][] points) {
+        Arrays.sort(points, (a, b) -> Integer.compare(a[0], b[0]));
+
+        int count = 1;
+        for(int i = 1; i < points.length; i++){
+            if(points[i][0] > points[i-1][1]){
+                count++;
+            }
+            else{
+                points[i][1] = Math.min(points[i][1], points[i-1][1]);
             }
         }
-        if(totalSum < 0) return -1;
-        return index;
+        return count;
     }
 }
 ```
