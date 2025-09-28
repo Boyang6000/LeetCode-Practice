@@ -84,4 +84,38 @@ class Solution {
 
 <br>
 
+## 746. 使用最小花费爬楼梯
+- 题目链接：[**LeetCode 746. Min Cost Climbing Stairs**](https://leetcode.com/problems/min-cost-climbing-stairs/)
+- 关键词：**Dynamic Programming**
+
+<br>
+
+## 💡 思路
+这道题其实跟70是一样的。只需要增加一个cost的比较。
+
+
+<br>
+
+## 💻 代码实现
+```java
+class Solution {
+    public int minCostClimbingStairs(int[] cost) {
+        int len = cost.length;
+        int[] dp = new int[len + 1];
+
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for(int i = 2; i <= len; i++){
+            dp[i] = Math.min(dp[i-1] + cost[i-1], dp[i-2] + cost[i-2]);
+        }
+
+        return dp[len];
+    }
+}
+```
+
+<br>
+
 ## 📝 今日心得
+相对而言，dp的感觉还是简单一些，主要考虑好起始的值以及每一层递归公式的逻辑就行。
