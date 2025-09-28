@@ -38,14 +38,16 @@ class Solution {
 
 <br>
 
-## 435. 无重叠区间
-- 题目链接：[**LeetCode 435. Non-overlapping Intervals**](https://leetcode.com/problems/non-overlapping-intervals/)
+## 738. 单调递增的数字
+- 题目链接：[**LeetCode 738. Monotone Increasing Digits**](https://leetcode.com/problems/monotone-increasing-digits/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题采用的是贪心算法，跟452类似，只要减去箭的个数就是不重复的了。
+这道题比较的巧妙，需要通过倒序的方式来处理，当当前index的数字比后面的数字大时，当前index数字减1，后面的数字变成9。
+
+为了方便操作，可以先把数字变成string模式，最后再把string变成int。
 
 
 <br>
@@ -53,19 +55,20 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public int eraseOverlapIntervals(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
-
-        int count = 1;
-        for(int i = 1; i < intervals.length; i++){
-            if(intervals[i][0] < intervals[i-1][1]){
-                intervals[i][1] = Math.min(intervals[i][1], intervals[i-1][1]);
-            }
-            else{
-                count++;
+    public int monotoneIncreasingDigits(int n) {
+        String s = String.valueOf(n);
+        char[] chars = s.toCharArray();
+        int start = s.length();
+        for(int i = s.length() - 2; i >= 0; i--){
+            if(chars[i] > chars[i + 1]){
+                chars[i]--;
+                start = i + 1;
             }
         }
-        return intervals.length - count;
+        for(int i = start; i < s.length(); i++){
+            chars[i] = '9';
+        }
+        return Integer.parseInt(String.valueOf(chars));
     }
 }
 ```
