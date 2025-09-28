@@ -2,14 +2,18 @@
 
 <br>
 
-## 455. 分发饼干 
-- 题目链接：[**LeetCode 455. Assign Cookies**](https://leetcode.com/problems/assign-cookies/)
+## 122.买卖股票的最佳时机II
+- 题目链接：[**LeetCode 122. Best Time to Buy and Sell Stock II**](https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/)
 - 关键词：**Greedy**  
 
 <br>
 
 ## 💡 思路
-这道题采用了贪心算法，可以考虑大饼干先满足大胃口，或者小饼干先满足小胃口。
+这道题采用了贪心算法,是一个非常巧妙的思路。因为只能有一股，当前只有买股票和卖股票两个操作，那么可以把利润分解到每天为单位的维度
+
+例如你在第0天买，第3天卖，那么利润就是prices[3] - prices[0] = (prices[3] - prices[2]) + (prices[2] - prices[1]) + (prices[1] - prices[0])
+
+最后只要把利润是正的加在一起就行。
 
 
 <br>
@@ -17,33 +21,32 @@
 ## 💻 代码实现
 ```java
 class Solution {
-    public int findContentChildren(int[] g, int[] s) {
-        if(g.length == 0 || s.length == 0) return 0;
-        Arrays.sort(g);
-        Arrays.sort(s);
-        int count = 0;
-        int index = s.length - 1;
-        for(int i = g.length - 1; i >= 0; i--){
-            if(index >= 0 && g[i] <= s[index]){
-                count++;
-                index--;
+    public int maxProfit(int[] prices) {
+        int[] profit = new int[prices.length - 1];
+        int index = 0;
+        int sum = 0;
+        for(int i = 1; i < prices.length; i++){
+            profit[index] = prices[i] - prices[index];
+            if(profit[index] > 0){
+                sum += profit[index];
             }
+            index++;
         }
-        return count;
+        return sum;
     }
 }
 ```
 
 <br>
 
-## 376. 摆动序列
-- 题目链接：[**LeetCode 376. Wiggle Subsequence**](https://leetcode.com/problems/wiggle-subsequence/)
+## 55. 跳跃游戏
+- 题目链接：[**LeetCode 55. Jump Game**](https://leetcode.com/problems/jump-game/)
 - 关键词：**Greedy**
 
 <br>
 
 ## 💡 思路
-这道题采用的是贪心算法，直接去看这个数字前后的差值。
+这道题采用的是贪心算法，计算跳跃可以覆盖的距离，如果距离大于等于长度，则可以实现跳跃到最后。
 
 
 <br>
@@ -51,19 +54,14 @@ class Solution {
 ## 💻 代码实现
 ```java
 class Solution {
-    public int wiggleMaxLength(int[] nums) {
-        if(nums.length <= 1) return nums.length;
-        int curdiff = 0;
-        int prediff = 0;
-        int count = 1;
-        for(int i = 1; i < nums.length; i++){
-            curdiff = nums[i] - nums[i - 1];
-            if((curdiff > 0 && prediff <= 0 || (curdiff < 0 && prediff >= 0))){
-                count++;
-                prediff = curdiff;
-            }
+    public boolean canJump(int[] nums) {
+        int cover = 0;
+        if(nums.length == 1) return true;
+        for(int i = 0; i <= cover; i++){
+            cover = Math.max(i + nums[i], cover);
+            if(cover >= nums.length - 1) return true;
         }
-        return count;
+        return false;
     }
 }
 ```
