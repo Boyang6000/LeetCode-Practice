@@ -1,17 +1,17 @@
-# 📝 LeetCode 学习日志 Day 35
+# 📝 LeetCode 学习日志 Day 36
 
 <br>
 
-## 416. 分割等和子集
-- 题目链接：[**LeetCode 416. Partition Equal Subset Sum**](https://leetcode.com/problems/partition-equal-subset-sum/)
+## 1049. 最后一块石头的重量 II
+- 题目链接：[**LeetCode 1049. Last Stone Weight II**](https://leetcode.com/problems/last-stone-weight-ii/)
 - 关键词：**Dynamic Programming**  
 
 <br>
 
 ## 💡 思路
-这道题用到的是01背包的方法，首先先判断sum是否能被2整除。然后将sum的一半看作是背包的容量，数字看作是物品的价值和重量，是一样的等同于这个数字。当背包被塞满时，查看背包的价值是否等于sum的一半。
+这道题用到的是01背包的方法，跟416是一样的，将这堆石头分成两个相同的重量，那他们互相相撞的结果就是剩下最小的重量了。
 
-这道题用的是一维数组来实现01背包的。在这个一维数组中，初始化都为0，然后需要两次循环，第一次是对于每个物品的循环，是正循环，第二次是对背包容量的一个循环，这里采用的是倒序，为了避免多次添加同个物品。
+那么就是看最多能装多少重量，设定背包容量为总重量的一半。
 
 
 <br>
@@ -19,22 +19,21 @@
 ## 💻 代码实现
 ```java
 class Solution {
-    public boolean canPartition(int[] nums) {
+    public int lastStoneWeightII(int[] stones) {
         int sum = 0;
-        for(int i: nums){
-            sum += i;
+        for(int stone: stones){
+            sum += stone;
         }
-        if(sum % 2 == 1) return false;
-        int half = sum / 2;
+        int target = sum >> 1;
 
-        int[] dp = new int[half + 1];
-        for(int i = 0; i < nums.length; i++){
-            for(int j = half; j >= nums[i]; j--){
-                dp[j] = Math.max(dp[j], dp[j - nums[i]] + nums[i]);
+        int[] dp = new int[target + 1];
+        for(int i = 0; i < stones.length; i++){
+            for(int j = target; j >= stones[i]; j--){
+                dp[j] = Math.max(dp[j], dp[j - stones[i]] + stones[i]);
             }
-        }    
+        }
 
-        return dp[half] == half;
+        return sum - 2*dp[target];
     }
 }
 ```
